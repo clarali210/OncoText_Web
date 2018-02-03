@@ -1,0 +1,58 @@
+{
+  "Side": {
+    "BreastSide": ["l", "r"],
+    "Organ": ["0", "1"]
+  },
+  "Invasive": {
+    "cancer": ["0", "1"],
+    "CancerInvasive": ["0", "1"],
+    "IDC": ["0", "1"],
+    "ILC": ["0", "1"],
+    "TubularCancer": ["0", "1"],
+    "CancerInvNOS": ["0", "1"],
+    "DCIS": ["0", "1"],
+    "InsituNOS": ["0", "1"],
+    "CancerNotOfBreastOrigin": ["0", "1"]
+  },
+  "Atypias": {
+    "ADH": ["0", "1"],
+    "ALH": ["0", "1"],
+    "LCIS": ["0", "1"],
+    "LobularNeoplasia": ["0", "1"],
+    "FlatEpithelial": ["0", "1"],
+    "ADH_DCIS": ["0", "1"]
+  },
+  "TumorMarkers": {
+    "ER": ["0", "1", "9"],
+    "PR": ["0", "1", "9"],
+    "her2": ["0", "1", "9"],
+    "Her2Fish": ["0", "1", "9"],
+    "Her2_IHC": ["0", "1", "2", "3", "4", "9"]
+  },
+  "Phylodes": {
+    "Phyllodes": ["0", "1"],
+    "SuspiciousForPhyllodes": ["0", "1"]
+  },
+  "LymphNodes": {
+    "ITC": ["0", "1"],
+    "NodeTissue": ["0", "1"]
+  },
+  "CancerFeatures": {
+    "LVI": ["0", "1", "9"],
+    "BVI": ["0", "1", "9"],
+    "ECE": ["0", "1", "9"]
+  },
+  "Other": {
+    "Papill": ["0", "1"],
+    "CancerSuspicious": ["0", "1"],
+    "CancerNOS": ["0", "1"],
+    "BluntAdenosis": ["0", "1"],
+    "CancerInvInsituNOS": ["0", "1"],
+    "InvasiveSuspicious": ["0", "1"],
+    "PositiveLN": ["0", "1"]
+  },
+  "ReportData": {
+    "PathologyType": ["Anatomic", "Cytology"],
+    "BiopsyType": ["Core", "Excision", "Other", "9"]
+  }
+}
