@@ -73,7 +73,7 @@ class ExportButton extends Component {
       return (
         <div className={"submit-section export-"+this.props.exportKey}>
           <br/>
-          <CSVLink filename={this.props.filename} headers={headers} data={Session.get('exportData')[this.props.exportKey]} target="_blank">
+          <CSVLink filename={this.props.filename} headers={headers} data={Session.get('exportData')[this.props.exportKey]} target="_self">
             <p><button className="btn btn-lg btn-info mar">{Session.get('exportText')[this.props.exportKey]}</button></p>
           </CSVLink>
         </div>
