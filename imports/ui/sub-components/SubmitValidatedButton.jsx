@@ -23,14 +23,14 @@ export default class SubmitValidatedButton extends Component {
   render(){
     if (this.props.validatedReports.length > 0) {
       return (
-        <div className="submit-section float-right">
+        <div className="button-section submit-button">
           <br/>
           <p><button className="btn btn-lg btn-info mar" onClick={() => this.handleSubmitValidated()}>Submit Validated</button></p>
         </div>
       );
     } else {
       return (
-        <div className="submit-section float-right">
+        <div className="button-section submit-button">
           <b>No validated reports to submit.</b>
           <p><button className="btn btn-lg btn-info mar">Submit Validated</button></p>
         </div>

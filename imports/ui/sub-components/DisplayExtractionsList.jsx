@@ -51,7 +51,7 @@ class DisplayExtractionsList extends Component {
           displayFilterList.push(
             <div className="display-filter-item" key={filterName+"-display-div"}>
               <Checkbox value={filterName} id={filterName}/>
-              <label className="checkbox-label-display" htmlFor={filterName}> {filterName}</label>
+              <label className="check checkbox-label-display" htmlFor={filterName}> {filterName}</label>
             </div>
           );
         }
@@ -70,7 +70,7 @@ class DisplayExtractionsList extends Component {
         <div>
           <input id="all" type="checkbox" checked={this.props.checkAllDisplay}
           onChange={() => this.handleCheckAllDisplay()}/>
-          <label className="checkbox-label-displayall" htmlFor="all"> All</label>
+          <label className="check checkbox-label-displayall" htmlFor="all"> All</label>
         </div>
         <CheckboxGroup name="displayFilters" value={this.props.checkedDisplayFilters}
         onChange={(newDisplays) => this.handleCheckDisplayItem(newDisplays)}>

@@ -83,7 +83,7 @@ class ValidateDisplayedButton extends Component {
     }
 
     return(
-      <div className="submit-section col-md-12 centered">
+      <div className="button-section col-md-12 centered">
         <div className="col-md-2"></div>
         {validateButton}
         {unvalidateButton}

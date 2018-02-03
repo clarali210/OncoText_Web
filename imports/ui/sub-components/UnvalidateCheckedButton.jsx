@@ -10,14 +10,14 @@ class UnvalidateCheckedButton extends Component {
   render(){
     if (this.props.checkedValidated === null || this.props.checkedValidated.length === 0) {
       return (
-        <div className="submit-section float-left">
+        <div className="button-section unvalidate-button">
           <b>No reports selected.</b>
           <p><button className="btn btn-lg btn-info mar">Unvalidate</button></p>
         </div>
       );
     } else {
       return (
-        <div className="submit-section float-left">
+        <div className="button-section unvalidate-button">
           <br/>
           <p><button onClick={() => this.handleUnvalidate()} role="button"
           className="btn btn-lg btn-info mar">Unvalidate</button></p>

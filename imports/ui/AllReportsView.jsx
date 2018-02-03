@@ -51,16 +51,16 @@ class AllReportsView extends Component {
           </div>
         </div>
 
-        <div className="col-md-12 Report centered">
-          <div className="col-md-2 centered content">
+        <div className="col-md-12 centered">
+          <div className="col-md-2 centered">
             <FilterList/>
           </div>
-          <div className="col-md-5 centered content">
+          <div className="col-md-5 centered">
             <ExportButton exportKey="ReportID" exportText="Export Selected" filename={this.queryToFilename()+".csv"}/>
             <ExportButton exportKey="EMPI" exportText="Export EMPI History" filename={this.queryToFilename()+"_EMPIs.csv"}/>
             <ReportList name="unvalidated" reports={this.props.reports}/>
           </div>
-          <div className="col-md-5 centered content">
+          <div className="col-md-5 centered">
             <UnvalidateCheckedButton/>
             <SubmitValidatedButton validatedReports={this.props.reports['validated']}/>
             <ReportList name="validated" reports={this.props.reports}/>

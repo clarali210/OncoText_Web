@@ -43,10 +43,10 @@ class ReportList extends Component {
         <div className="check-all">
           <input id={"check-all-"+this.props.name} type="checkbox" checked={Session.get('checkAll')[this.props.name]}
           onChange={() => this.handleCheckAll()}/>
-          <label className="checkbox-label-all" htmlFor={"check-all-"+this.props.name}> All</label>
+          <label className="check checkbox-label-all" htmlFor={"check-all-"+this.props.name}> All</label>
         </div>
         <div className="list-container-title">{this.props.containerTitle}</div>
-        <div className="extractions">
+        <div>
           <CheckboxGroup name={this.props.name} value={this.props.checkedReports[this.props.name]}
           onChange={(newReports) => this.handleCheckReports(newReports)}>
             {rows}

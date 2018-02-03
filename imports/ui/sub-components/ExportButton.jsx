@@ -21,7 +21,7 @@ class ExportButton extends Component {
 
     if (checkedReports.length === 0){
       return(
-        <div className={"submit-section export-"+this.props.exportKey}>
+        <div className={"button-section export-"+this.props.exportKey}>
           <b>No reports selected.</b>
           <p><button className="btn btn-lg btn-info mar">{this.props.exportText}</button></p>
         </div>
@@ -71,7 +71,7 @@ class ExportButton extends Component {
       );
 
       return (
-        <div className={"submit-section export-"+this.props.exportKey}>
+        <div className={"button-section export-"+this.props.exportKey}>
           <br/>
           <CSVLink filename={this.props.filename} headers={headers} data={Session.get('exportData')[this.props.exportKey]} target="_self">
             <p><button className="btn btn-lg btn-info mar">{Session.get('exportText')[this.props.exportKey]}</button></p>

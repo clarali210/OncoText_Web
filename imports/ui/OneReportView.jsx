@@ -29,23 +29,23 @@ class OneReportView extends Component {
             </div>
             <div className="col-md-1"></div>
             <div className="col-md-1">
-              <a href={FlowRouter.path('/')} className="btn btn-lg btn-info back" role="button">Back to Home</a>
+              <a href={FlowRouter.path('/')} className="btn btn-lg btn-info back-button" role="button">Back to Home</a>
             </div>
           </div>
           <div className="col-md-12 row centered">
             <ValidateDisplayedButton currentReport={this.props.currentReport} extractionLabels={this.props.extractionLabels}/>
           </div>
-          <div className="col-md-12 row centered content">
-            <div className="col-md-2 centered content">
+          <div className="col-md-12 row centered">
+            <div className="col-md-2 centered">
               <DisplayExtractionsList extractionLabels={this.props.extractionLabels}/>
             </div>
-            <div className="col-md-6 centered content">
+            <div className="col-md-6 centered">
               <div className="list-container">
                 <div className="list-container-title">Report Text</div>
                 <ReportText currentReport={this.props.currentReport}/>
               </div>
             </div>
-            <div className="col-md-4 centered content">
+            <div className="col-md-4 centered">
               <div className="list-container">
                 <div className="list-container-title">Extractions</div>
                 <Extractions currentReport={this.props.currentReport}/>
