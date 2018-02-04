@@ -68,6 +68,11 @@ h2 {
   margin: 0 0 0 -20px;
 }
 
+.delete:focus{
+  outline: 0;
+  opacity: 0.5;
+}
+
 .search .delete {
   float: right;
   position: relative;
@@ -135,6 +140,11 @@ h2 {
   position: absolute;
   margin-top: -40px;
   right: 20px;
+}
+
+.clear-all:focus {
+  outline: 0;
+  opacity: 0.5;
 }
 
 /***** ALL MAJOR BUTTONS *****/
@@ -395,9 +405,4 @@ input[type="checkbox"]:checked + .check:after {
 /* hovering over report-list-item links */
 a:hover {
   color: hotpink;
-}
-
-button:focus {
-  opacity: 0.5;
-  outline: 0;
 }
