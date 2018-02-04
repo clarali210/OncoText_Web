@@ -29,13 +29,13 @@ class ExportButton extends Component {
     } else {
       var exportData = [];
 
-      var headers = ["EMPI", "Report_Date_Time", "Report_Text"];
+      var headers = ["EMPI", "Report_Date", "Report_Text"];
       for (var category in extractions){
         for (var label in extractions[category]){
           headers.push(label);
         }
       }
-      headers = headers.concat(["Report_Text_Segmented", "filename", "batchID", "train", "validated", "Institution", "MRN", "ReportID"])
+      headers = headers.concat(["Report_Text_Segmented", "Report_Date_Time", "filename", "batchID", "train", "validated", "Institution", "MRN", "ReportID"])
 
       const self = this;
       Meteor.call(

@@ -54,5 +54,20 @@
   "ReportData": {
     "PathologyType": ["Anatomic", "Cytology"],
     "BiopsyType": ["Core", "Excision", "Other", "9"]
+  },
+  "OrganFields": {
+    "OrganAdrenal": ["0", "1"],
+    "OrganBladder": ["0", "1"],
+    "OrganCervix": ["0", "1"],
+    "OrganColon": ["0", "1"],
+    "OrganDuodenum": ["0", "1"],
+    "OrganEsophagus": ["0", "1"],
+    "OrganKidney": ["0", "1"],
+    "OrganLiver": ["0", "1"],
+    "OrganLung": ["0", "1"],
+    "OrganOvary": ["0", "1"],
+    "OrganPancreas": ["0", "1"],
+    "OrganThyroid": ["0", "1"],
+    "OrganUterus": ["0", "1"]
   }
 }
