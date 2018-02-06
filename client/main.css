@@ -136,6 +136,7 @@ h2 {
 
 .clear-all {
   color: gray;
+  background-color: transparent;
   border: none;
   position: absolute;
   margin-top: -40px;

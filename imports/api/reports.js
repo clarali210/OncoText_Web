@@ -22,12 +22,16 @@ if (Meteor.isServer) {
     },
 
     'exportChecked'(key, checkedReports){
-      var checkedKeyValues = [];
-      for (var ind in checkedReports){
-        var report = Reports.find({ReportID: checkedReports[ind]}).fetch()[0];
-        if ((report !== undefined) && (!checkedKeyValues.includes(report[key]))){
-          checkedKeyValues.push(report[key]);
-        }
+      if (key == "ReportID"){
+	var checkedKeyValues = checkedReports;
+      } else {
+        var checkedKeyValues = [];
+        for (var ind in checkedReports){
+          var report = Reports.find({ReportID: checkedReports[ind]}).fetch()[0];
+          if ((report !== undefined) && (!checkedKeyValues.includes(report[key]))){
+            checkedKeyValues.push(report[key]);
+          }
+	}
       }
       var exportReports = [];
       for (var ind in checkedKeyValues){
