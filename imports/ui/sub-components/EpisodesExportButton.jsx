@@ -5,7 +5,7 @@ import { CSVLink } from 'react-csv';
 
 var extractions = require('/imports/extractions.json');
 
-class ExportButton extends Component {
+class EpisodesExportButton extends Component {
 
   componentWillReceiveProps(nextProps){
     if (JSON.stringify(this.props.checkedReports) !== JSON.stringify(nextProps.checkedReports)){
@@ -17,7 +17,7 @@ class ExportButton extends Component {
   render() {
 
     var button = [];
-    var checkedReports = this.props.checkedReports['unvalidated'].concat(this.props.checkedReports['validated']);
+    var checkedReports = this.props.checkedReports;
 
     if (checkedReports.length === 0){
       return(
@@ -29,17 +29,17 @@ class ExportButton extends Component {
     } else {
       var exportData = [];
 
-      var headers = ["EMPI", "Report_Date", "Report_Text"];
+      var headers = ["EMPI", "EpisodeID", "Report_Date"];
       for (var category in extractions){
         for (var label in extractions[category]){
           headers.push(label);
         }
       }
-      headers = headers.concat(["Report_Text_Segmented", "Report_Date_Time", "filename", "batchID", "train", "validated", "Institution", "MRN", "ReportID"])
+      headers = headers.concat(["Report_Date_Time", "filename", "batchID", "train", "validated", "Institution", "MRN", "ReportID"])
 
       const self = this;
       Meteor.call(
-        'reports.exportChecked', self.props.exportKey, checkedReports,
+        'episodes.exportChecked', self.props.exportKey, checkedReports,
         function(error, result){
           if (error){
             console.log(error);
@@ -91,7 +91,7 @@ export default withTracker((props) => {
     exportText: props.exportText,
     currentText: Session.get('exportText'),
     exportData: Session.get('exportData'),
-    checkedReports: Session.get('checkedReports') || {unvalidated: [], validated: []},
+    checkedReports: Session.get('checkedReports') || [],
     filename: props.filename,
   })
-})(ExportButton);
+})(EpisodesExportButton);

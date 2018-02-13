@@ -7,21 +7,19 @@ import { Mongo } from 'meteor/mongo';
 import ReportLimit from './sub-components/ReportLimit.jsx';
 import SearchBar from './sub-components/SearchBar.jsx';
 import FilterList from './sub-components/FilterList.jsx';
-import ExportButton from './sub-components/ExportButton.jsx';
-import UnvalidateCheckedButton from './sub-components/UnvalidateCheckedButton.jsx';
-import SubmitValidatedButton from './sub-components/SubmitValidatedButton.jsx';
-import ReportList from './sub-components/ReportList.jsx';
+import EpisodesExportButton from './sub-components/EpisodesExportButton.jsx';
+import EpisodesReportList from './sub-components/EpisodesReportList.jsx';
 
-import { Reports } from '/imports/api/reports.js';
+import { Episodes } from '/imports/api/episodes.js';
 
 var extractions = require('/imports/extractions.json');
 
 
-class AllReportsView extends Component {
+class EpisodesView extends Component {
 
   constructor(props) {
     super(props);
-    Session.set('query', "...");
+    Session.set('episodes-query', "...");
   }
 
   queryToFilename(){
@@ -55,15 +53,10 @@ class AllReportsView extends Component {
           <div className="col-md-2 centered">
             <FilterList/>
           </div>
-          <div className="col-md-5 centered">
-            <ExportButton exportKey="ReportID" exportText="Export Selected" filename={this.queryToFilename()+".csv"}/>
-            <ExportButton exportKey="EMPI" exportText="Export EMPI History" filename={this.queryToFilename()+"_EMPIs.csv"}/>
-            <ReportList name="unvalidated" reports={this.props.reports}/>
-          </div>
-          <div className="col-md-5 centered">
-            <UnvalidateCheckedButton/>
-            <SubmitValidatedButton validatedReports={this.props.reports['validated']}/>
-            <ReportList name="validated" reports={this.props.reports}/>
+          <div className="col-md-9 centered">
+            <EpisodesExportButton exportKey="ReportID" exportText="Export Selected" filename={this.queryToFilename()+".csv"}/>
+            <EpisodesExportButton exportKey="EMPI" exportText="Export EMPI History" filename={this.queryToFilename()+"_EMPIs.csv"}/>
+            <EpisodesReportList name="episodes" reports={this.props.reports}/>
           </div>
         </div>
 
@@ -110,49 +103,30 @@ export default withTracker(() => {
   // Report limit
   var reportLimit = parseInt(Session.get('reportLimit'));
 
-  const reportSubscription = Meteor.subscribe('reports', filterQuery, reportLimit);
-  var unvalidatedReports = Reports.find({$where: "this.validatedLabels.length === 0"}).fetch();
-  var validatedReports = Reports.find({$where: "this.validatedLabels.length > 0"}).fetch();
-
-  // Keep track of object ids for "nextReport" button in OneReportView
-  var unvalidated_ids = [];
-  for (var ind in unvalidatedReports.reverse()){
-    unvalidated_ids.push(unvalidatedReports[ind]['_id']._str);
-  }
-  var validated_ids = [];
-  for (var ind in validatedReports.reverse()){
-    validated_ids.push(validatedReports[ind]['_id']._str);
-  }
-  localStorage.setItem('report_ids', JSON.stringify({
-    unvalidated: unvalidated_ids,
-    validated: validated_ids
-  }));
+  const episodesSubscription = Meteor.subscribe('episodes', filterQuery, reportLimit);
+  var reports = Episodes.find({}).fetch();
 
   // Update query number
-  if (reportSubscription.ready()){
+  if (episodesSubscription.ready()){
     Meteor.call(
-      'reports.serverQuery', filterQuery,
+      'episodes.serverQuery', filterQuery,
       function(error, result){
         if (error){
           console.log(error);
         }
         if (result != undefined){
-          Session.set('query', result);
-          localStorage.setItem('query', result);
-        }
+          Session.set('episodes-query', result);
+         }
       }
     );
   }
   else{
-    Session.set('query', "...");
+    Session.set('episodes-query', "...");
   }
 
   return {
-    reports: {
-      unvalidated: unvalidatedReports,
-      validated: validatedReports
-    },
-    query: Session.get('query'),
+    reports: reports,
+    query: Session.get('episodes-query'),
     filterQuery: filterQuery,
   };
-})(AllReportsView);
+})(EpisodesView);

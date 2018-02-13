@@ -6,6 +6,7 @@ import { mount } from 'react-mounter';
 import App from '/imports/ui/App.jsx';
 import AllReportsView from '/imports/ui/AllReportsView.jsx';
 import OneReportView from '/imports/ui/OneReportView.jsx';
+import EpisodesView from '/imports/ui/EpisodesView.jsx';
 
 FlowRouterAutoscroll.animationDuration = 500;
 
@@ -23,6 +24,15 @@ FlowRouter.route('/reports/:_id', {
   action(params, queryParams) {
     mount(App, {
       content: <OneReportView/>,
+    });
+  },
+});
+
+FlowRouter.route('/episodes', {
+  name: 'Episodes',
+  action() {
+    mount(App, {
+      content: <EpisodesView/>,
     });
   },
 });

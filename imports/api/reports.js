@@ -16,12 +16,12 @@ if (Meteor.isServer) {
   });
 
   Meteor.methods({
-    'serverQuery'(query){
+    'reports.serverQuery'(query){
       numReps = Reports.find(query).count();
       return numReps;
     },
 
-    'exportChecked'(key, checkedReports){
+    'reports.exportChecked'(key, checkedReports){
       if (key == "ReportID"){
 	var checkedKeyValues = checkedReports;
       } else {
