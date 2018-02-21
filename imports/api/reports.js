@@ -23,7 +23,7 @@ if (Meteor.isServer) {
 
     'reports.exportChecked'(key, checkedReports){
       if (key == "ReportID"){
-	var checkedKeyValues = checkedReports;
+        var checkedKeyValues = checkedReports;
       } else {
         var checkedKeyValues = [];
         for (var ind in checkedReports){
@@ -31,14 +31,18 @@ if (Meteor.isServer) {
           if ((report !== undefined) && (!checkedKeyValues.includes(report[key]))){
             checkedKeyValues.push(report[key]);
           }
-	}
+	      }
       }
-      var exportReports = [];
-      for (var ind in checkedKeyValues){
-        exportReports = exportReports.concat(Reports.find({[key]: checkedKeyValues[ind]}).fetch());
+      return Meteor.call('reports.fetchReports', key, checkedKeyValues);
+    },
+
+    'reports.fetchReports'(key, keyValues){
+      var reports = [];
+      for (var ind in keyValues){
+        reports = reports.concat(Reports.find({[key]: keyValues[ind]}).fetch());
       }
-      exportReports = exportReports.filter((n) => { return n != undefined });
-      return exportReports;
+      reports = reports.filter((n) => { return n != undefined });
+      return reports;
     }
   })
 }
