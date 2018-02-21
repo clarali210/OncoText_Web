@@ -101,10 +101,10 @@ export default withTracker(() => {
   // Search bar
   var searchTerm = Session.get('searchBar');
   if (!isNaN(parseFloat(searchTerm)) && isFinite(searchTerm)){
-    filterQuery['$or'] = [{$where: "/^"+searchTerm+".*/.test(this.ReportID)"}, {$where: "/^"+searchTerm+".*/.test(this.EMPI)"}];
+    filterQuery['$or'] = [{$where: "/^"+searchTerm+".*/.test(this.EMPI)"}];
   }
   else{
-    filterQuery['$or'] = [{'Report_Text': {$regex: searchTerm, '$options' : 'i'}}];
+    filterQuery['$or'] = [{'ReportID': {$regex: searchTerm, '$options' : 'i'}}, {'Report_Text': {$regex: searchTerm, '$options' : 'i'}}];
   }
 
   // Report limit

@@ -9,6 +9,8 @@ import SearchBar from './sub-components/SearchBar.jsx';
 import FilterList from './sub-components/FilterList.jsx';
 import EpisodesExportButton from './sub-components/EpisodesExportButton.jsx';
 import EpisodesReportList from './sub-components/EpisodesReportList.jsx';
+import BulkExportButton from './sub-components/BulkExportButton.jsx';
+import BulkExport from './sub-components/BulkExport.jsx';
 
 import { Episodes } from '/imports/api/episodes.js';
 
@@ -53,10 +55,14 @@ class EpisodesView extends Component {
           <div className="col-md-2 centered">
             <FilterList/>
           </div>
-          <div className="col-md-9 centered">
+          <div className="col-md-6 centered">
             <EpisodesExportButton exportKey="ReportID" exportText="Export Selected" filename={this.queryToFilename()+".csv"}/>
             <EpisodesExportButton exportKey="EMPI" exportText="Export EMPI History" filename={this.queryToFilename()+"_EMPIs.csv"}/>
             <EpisodesReportList name="episodes" reports={this.props.reports}/>
+          </div>
+          <div className="col-md-4 centered">
+            <BulkExportButton/>
+            <BulkExport/>
           </div>
         </div>
 
@@ -94,10 +100,10 @@ export default withTracker(() => {
   // Search bar
   var searchTerm = Session.get('searchBar');
   if (!isNaN(parseFloat(searchTerm)) && isFinite(searchTerm)){
-    filterQuery['$or'] = [{$where: "/^"+searchTerm+".*/.test(this.ReportID)"}, {$where: "/^"+searchTerm+".*/.test(this.EMPI)"}];
+    filterQuery['$or'] = [{$where: "/^"+searchTerm+".*/.test(this.EMPI)"}];
   }
   else{
-    filterQuery['$or'] = [{'Report_Text': {$regex: searchTerm, '$options' : 'i'}}];
+    filterQuery['$or'] = [{'ReportID': {$regex: searchTerm, '$options' : 'i'}}, {'Report_Text': {$regex: searchTerm, '$options' : 'i'}}];
   }
 
   // Report limit

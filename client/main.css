@@ -179,6 +179,35 @@ h2 {
   float: right;
 }
 
+/***** BULK EXPORT *****/
+.export-bulk-option {
+  background-color: transparent;
+  padding: 0px 20px 0px 20px;
+  text-align: left;
+  border-style: solid;
+  border-color: white;
+}
+
+.export-bulk {
+  margin: 90px 5px 5px 5px;
+  height: 50vh;
+  cursor: pointer;
+  background-color: #f7f7f7;
+  background-image: url("images/upload.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 25vw;
+}
+
+.export-bulk-hover {
+  background-color: #d6ffe2;
+}
+
+.export-bulk-error {
+  background-color: #ffd6d6;
+  background-image: url("images/upload-error.png");
+}
+
 /***** REPORT LIST ITEMS *****/
 .report-list-item {
   background-color: #f1f1f1;
