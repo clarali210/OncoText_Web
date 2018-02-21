@@ -43,6 +43,7 @@ class ExportButton extends Component {
         function(error, result){
           if (error){
             console.log(error);
+
           }
           if (result != undefined){
             for (var ind in result) {
@@ -65,6 +66,8 @@ class ExportButton extends Component {
               var exports = self.props.exportData;
               exports[self.props.exportKey] = exportData;
               Session.set('exportData', exports);
+
+              console.log('ready');
             }
           }
         }

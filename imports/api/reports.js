@@ -33,7 +33,7 @@ if (Meteor.isServer) {
           }
 	      }
       }
-      Meteor.call('reports.fetchReports', key, checkedKeyValues);
+      return Meteor.call('reports.fetchReports', key, checkedKeyValues);
     },
 
     'reports.fetchReports'(key, keyValues){

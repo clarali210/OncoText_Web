@@ -31,7 +31,7 @@ if (Meteor.isServer) {
           }
 	      }
       }
-      Meteor.call('episodes.fetchReports', key, checkedKeyValues);
+      return Meteor.call('episodes.fetchReports', key, checkedKeyValues);
     },
 
     'episodes.fetchReports'(key, keyValues){
