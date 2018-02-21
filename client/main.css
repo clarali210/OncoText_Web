@@ -340,12 +340,11 @@ input[type="checkbox"]:checked + .check:after {
 
 /***** REPORT TEXT SECTION *****/
 .report-text {
-  margin: 5px 5px 5px 5px;
+  margin: 30px 5px;
   font-size: 0.8em;
   text-align: left;
   overflow: scroll;
   white-space: pre-wrap;
-  margin-top: 25px;
 }
 
 /* toggle segmented */
