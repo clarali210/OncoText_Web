@@ -57,8 +57,6 @@ class BulkExportButton extends Component {
             // Update button text
             if (self.props.currentText !== "Export in Bulk"){
               Session.set('bulkExportData', {'text': "Export in Bulk", 'reports': exportData});
-              console.log(self.props.reportKey, self.props.list);
-              console.log(Session.get('bulkExportData'));
             }
           }
         }

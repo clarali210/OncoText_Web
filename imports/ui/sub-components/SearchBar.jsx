@@ -5,11 +5,15 @@ export default class SearchBar extends Component {
   handleChangeSearch(e){
     Session.set('searchBar', e.target.value);
     localStorage.setItem('searchBar', e.target.value);
+
+    Session.set('checkedReports', {unvalidated: [], validated: []});
   }
 
   handleClearSearch(){
     Session.set('searchBar', "");
     localStorage.removeItem('searchBar');
+
+    Session.set('checkedReports', {unvalidated: [], validated: []});
   }
 
   render(){
