@@ -19,8 +19,7 @@ class BulkExport extends Component {
     fr.readAsText(files[0]);
 
     fr.onload = (e) => {
-      var list = fr.result.split(",");
-      // console.log(list, filename);
+      var list = fr.result.replace(/\r|\n|\r\n|\s/g, "").split(",");
 
       var info = Session.get('bulkExportInfo');
       info['filename'] = filename;
