@@ -109,7 +109,6 @@ export default withTracker(() => {
 
   // Report limit
   var reportLimit = parseInt(Session.get('reportLimit'));
-  console.log(filterQuery);
 
   const reportSubscription = Meteor.subscribe('reports', filterQuery, reportLimit);
   var unvalidatedReports = Reports.find({$where: "this.validatedLabels.length === 0"}).fetch();
