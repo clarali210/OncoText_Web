@@ -12,6 +12,8 @@ class FilterItem extends Component {
 
     Session.set('filters', filters);
     localStorage.setItem('filters', JSON.stringify(Session.get('filters')));
+
+    Session.set('checkedReports', {unvalidated: [], validated: []});
   }
 
   handleClearFilter(filterName){
@@ -20,6 +22,8 @@ class FilterItem extends Component {
 
     Session.set('filters', filters);
     localStorage.setItem('filters', JSON.stringify(Session.get('filters')));
+
+    Session.set('checkedReports', {unvalidated: [], validated: []});
   }
 
   render() {
