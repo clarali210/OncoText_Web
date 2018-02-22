@@ -48,7 +48,7 @@ class BulkExport extends Component {
           </SelectField>
         </div>
         <Dropzone className="export-bulk" activeClassName="export-bulk-hover" rejectClassName="export-bulk-error"
-        accept="text/*" onDrop={(files) => this.handleOnDrop(files)}/>
+        accept="text/*, application/vnd.ms-excel" onDrop={(files) => this.handleOnDrop(files)}/>
       </div>
     );
   }
