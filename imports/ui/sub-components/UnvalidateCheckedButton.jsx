@@ -8,7 +8,7 @@ class UnvalidateCheckedButton extends Component {
   }
 
   handleClick(){
-    if (this.props.checkedValidated === null || this.props.checkedValidated.length === 0){
+    if (this.props.checkedValidated !== null && this.props.checkedValidated.length !== 0){
       this.handleUnvalidate();
     } else {
       alert("No reports selected!");
