@@ -39,7 +39,7 @@ class BulkExportButton extends Component {
           headers.push(label);
         }
       }
-      headers = headers.concat(["Report_Date_Time", "filename", "batchID", "train", "validated", "Institution", "MRN", "ReportID"])
+      headers = headers.concat(["Report_Date_Time", "filename", "batchID", "train", "Institution", "MRN", "ReportID"])
 
       const self = this;
       Meteor.call(
