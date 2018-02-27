@@ -12,6 +12,8 @@
     "CancerInvNOS": ["0", "1"],
     "DCIS": ["0", "1"],
     "InsituNOS": ["0", "1"],
+    "GradeMaxInvasive": ["1", "2", "3", "9"],
+    "GradeMaxDCIS": ["1", "2", "3", "9"],
     "CancerNotOfBreastOrigin": ["0", "1"]
   },
   "Atypias": {
@@ -67,6 +69,7 @@
     "OrganLung": ["0", "1"],
     "OrganOvary": ["0", "1"],
     "OrganPancreas": ["0", "1"],
+    "OrganProstate": ["0", "1"],
     "OrganThyroid": ["0", "1"],
     "OrganUterus": ["0", "1"]
   }
