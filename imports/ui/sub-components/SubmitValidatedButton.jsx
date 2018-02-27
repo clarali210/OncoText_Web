@@ -20,22 +20,21 @@ export default class SubmitValidatedButton extends Component {
     });
   }
 
-  render(){
-    if (this.props.validatedReports.length > 0) {
-      return (
-        <div className="button-section submit-button">
-          <br/>
-          <p><button className="btn btn-lg btn-info mar" onClick={() => this.handleSubmitValidated()}>Submit Validated</button></p>
-        </div>
-      );
+  handleClick(){
+    if (this.props.validatedReports.length > 0){
+      this.handleSubmitValidated();
     } else {
-      return (
-        <div className="button-section submit-button">
-          <b>No validated reports to submit.</b>
-          <p><button className="btn btn-lg btn-info mar">Submit Validated</button></p>
-        </div>
-      );
+      alert("No validated reports to submit!");
     }
+  }
+
+  render(){
+    return (
+      <div className="button-section submit-button">
+        <div className="button-desc"><b>This submits the validated reports back to the machine for re-training.</b></div>
+        <p><button className="btn btn-lg btn-info mar" onClick={() => this.handleClick()}>Submit Validated</button></p>
+      </div>
+    );
   }
 }
 

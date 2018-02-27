@@ -159,6 +159,11 @@ h2 {
   margin-bottom: 5pt;
 }
 
+.button-desc {
+  width: 15vw;
+  margin: auto;
+}
+
 /***** EXPORT BUTTONS *****/
 .export-ReportID {
   float: left;

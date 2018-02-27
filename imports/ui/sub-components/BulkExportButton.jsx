@@ -13,15 +13,21 @@ class BulkExportButton extends Component {
     }
   }
 
+  handleAlert(){
+    if (this.props.list.length === 0){
+      alert("No file uploaded!");
+    }
+  }
+
   render() {
 
     var button = [];
 
     if (this.props.list.length === 0){
       return(
-        <div className={"button-section"}>
-          <b>No file uploaded.</b>
-          <p><button className="btn btn-lg btn-info mar">Export in Bulk</button></p>
+        <div className="button-section">
+          <div className="button-desc"><b>Download multiple reports by a list of key values such as EMPI or ReportID.</b></div>
+          <p><button className="btn btn-lg btn-info mar" onClick={() => this.handleAlert()}>Export in Bulk</button></p>
         </div>
       );
     } else {
@@ -63,8 +69,8 @@ class BulkExportButton extends Component {
       );
 
       return (
-        <div className={"button-section"}>
-          <br/>
+        <div className="button-section">
+          <div className="button-desc"><b>Download multiple reports by a list of key values such as EMPI or ReportID.</b></div>
           <CSVLink filename={this.props.filename} headers={headers} data={Session.get('bulkExportData')['reports']} target="_self">
             <p><button className="btn btn-lg btn-info mar">{Session.get('bulkExportData')['text']}</button></p>
           </CSVLink>

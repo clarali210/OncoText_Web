@@ -56,8 +56,8 @@ class EpisodesView extends Component {
             <FilterList/>
           </div>
           <div className="col-md-6 centered">
-            <EpisodesExportButton exportKey="ReportID" exportText="Export Selected" filename={this.queryToFilename()+".csv"}/>
-            <EpisodesExportButton exportKey="EMPI" exportText="Export EMPI History" filename={this.queryToFilename()+"_EMPIs.csv"}/>
+            <EpisodesExportButton exportKey="ReportID" exportText="Export Selected" desc="This exports the set of single path reports selected below." filename={this.queryToFilename()+".csv"}/>
+            <EpisodesExportButton exportKey="EMPI" exportText="Export All Reports" desc="This exports ALL path reports associated with the patients selected." filename={this.queryToFilename()+"_All.csv"}/>
             <EpisodesReportList name="episodes" reports={this.props.reports}/>
           </div>
           <div className="col-md-4 centered">

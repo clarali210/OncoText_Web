@@ -7,23 +7,21 @@ class UnvalidateCheckedButton extends Component {
     Meteor.call('reports.unvalidateChecked', this.props.checkedValidated);
   }
 
-  render(){
-    if (this.props.checkedValidated === null || this.props.checkedValidated.length === 0) {
-      return (
-        <div className="button-section unvalidate-button">
-          <b>No reports selected.</b>
-          <p><button className="btn btn-lg btn-info mar">Unvalidate</button></p>
-        </div>
-      );
+  handleClick(){
+    if (this.props.checkedValidated === null || this.props.checkedValidated.length === 0){
+      this.handleUnvalidate();
     } else {
-      return (
-        <div className="button-section unvalidate-button">
-          <br/>
-          <p><button onClick={() => this.handleUnvalidate()} role="button"
-          className="btn btn-lg btn-info mar">Unvalidate</button></p>
-        </div>
-      );
+      alert("No reports selected!");
     }
+  }
+
+  render(){
+    return (
+      <div className="button-section unvalidate-button">
+        <div className="button-desc"><b>This unvalidates the selected reports that were previously validated.</b></div>
+        <p><button onClick={() => this.handleClick()} className="btn btn-lg btn-info mar">Unvalidate</button></p>
+      </div>
+    );
   }
 }
 

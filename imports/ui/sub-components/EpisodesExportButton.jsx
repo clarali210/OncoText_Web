@@ -14,6 +14,12 @@ class EpisodesExportButton extends Component {
     }
   }
 
+  handleAlert(){
+    if (this.props.checkedReports.length === 0){
+      alert("No reports selected!");
+    }
+  }
+
   render() {
 
     var button = [];
@@ -22,8 +28,8 @@ class EpisodesExportButton extends Component {
     if (checkedReports.length === 0){
       return(
         <div className={"button-section export-"+this.props.exportKey}>
-          <b>No reports selected.</b>
-          <p><button className="btn btn-lg btn-info mar">{this.props.exportText}</button></p>
+          <div className="button-desc"><b>{this.props.description}</b></div>
+          <p><button className="btn btn-lg btn-info mar" onClick={() => this.handleAlert()}>{this.props.exportText}</button></p>
         </div>
       );
     } else {
@@ -72,7 +78,7 @@ class EpisodesExportButton extends Component {
 
       return (
         <div className={"button-section export-"+this.props.exportKey}>
-          <br/>
+          <div className="button-desc"><b>{this.props.description}</b></div>
           <CSVLink filename={this.props.filename} headers={headers} data={Session.get('exportData')[this.props.exportKey]} target="_self">
             <p><button className="btn btn-lg btn-info mar">{Session.get('exportText')[this.props.exportKey]}</button></p>
           </CSVLink>
@@ -92,6 +98,7 @@ export default withTracker((props) => {
     currentText: Session.get('exportText'),
     exportData: Session.get('exportData'),
     checkedReports: Session.get('checkedReports') || [],
+    description: props.desc,
     filename: props.filename,
   })
 })(EpisodesExportButton);
