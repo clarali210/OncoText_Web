@@ -53,7 +53,8 @@
   },
   "ReportData": {
     "PathologyType": ["Anatomic", "Cytology"],
-    "BiopsyType": ["Core", "Excision", "Other", "9"]
+    "BiopsyType": ["Core", "Excision", "Other", "9"],
+    "train": ["0", "1"]
   },
   "OrganFields": {
     "OrganAdrenal": ["0", "1"],
