@@ -27,7 +27,7 @@ class EpisodesView extends Component {
   queryToFilename(){
     var filterQuery = this.props.filterQuery;
     delete filterQuery['$or'];
-    filterQuery['Search'] = Session.get('searchBar');
+    filterQuery['Search'] = Session.get('searchBar')['string'];
 
     var filename = JSON.stringify(filterQuery);
     filename = filename.replace(/\"/g, "").replace(/\:/g, "=").replace(/\,/g, "\_")
@@ -98,21 +98,29 @@ export default withTracker(() => {
   }
 
   // Search bar
+  var generateSearch = function(fields, searchTerm){
+    var searches = [];
+    for (var ind in fields){
+      const key = fields[ind];
+      searches.push({[key]: {$regex: searchTerm, '$options' : 'i'}});
+    }
+    return searches;
+  };
   var searchBar = Session.get('searchBar');
   if (searchBar['op'] === "AND"){
     filterQuery['$and'] = []
     for (var ind in searchBar['terms']){
-      var obj = {$or: [{'ReportID': {$regex: searchBar['terms'][ind], '$options' : 'i'}}, {'Report_Text': {$regex: searchBar['terms'][ind], '$options' : 'i'}}]};
+      var obj = {$or: generateSearch(["ReportID", "EMPI", "Report_Text"], searchBar['terms'][ind])};
       filterQuery['$and'] = filterQuery['$and'].concat(obj);
     }
   } else if (searchBar['op'] === "OR") {
     filterQuery['$or'] = []
     for (var ind in searchBar['terms']){
-      var obj = {$or: [{'ReportID': {$regex: searchBar['terms'][ind], '$options' : 'i'}}, {'Report_Text': {$regex: searchBar['terms'][ind], '$options' : 'i'}}]};
+      var obj = {$or: generateSearch(["ReportID", "EMPI", "Report_Text"], searchBar['terms'][ind])};
       filterQuery['$or'] = filterQuery['$or'].concat(obj);
     }
   } else {
-    filterQuery['$or'] = [{'ReportID': {$regex: searchBar['terms'][0], '$options' : 'i'}}, {'Report_Text': {$regex: searchBar['terms'][0], '$options' : 'i'}}];
+    filterQuery['$or'] = generateSearch(["ReportID", "EMPI", "Report_Text"], searchBar['terms'][0]);
   }
 
   // Report limit
