@@ -82,7 +82,7 @@ export default withTracker(() => {
     }
   }
   Session.set('filters', prevFilters);
-  Session.set('searchBar', localStorage.getItem('searchBar') || "");
+  Session.set('searchBar', JSON.parse(localStorage.getItem('searchBar') || '{"op": "", "terms": [""], "string": ""}'));
   Session.set('reportLimit', localStorage.getItem('reportLimit') || "1");
 
 
@@ -98,12 +98,21 @@ export default withTracker(() => {
   }
 
   // Search bar
-  var searchTerm = Session.get('searchBar');
-  if (!isNaN(parseFloat(searchTerm)) && isFinite(searchTerm)){
-    filterQuery['$or'] = [{$where: "/^"+searchTerm+".*/.test(this.EMPI)"}];
-  }
-  else{
-    filterQuery['$or'] = [{'ReportID': {$regex: searchTerm, '$options' : 'i'}}, {'Report_Text': {$regex: searchTerm, '$options' : 'i'}}];
+  var searchBar = Session.get('searchBar');
+  if (searchBar['op'] === "AND"){
+    filterQuery['$and'] = []
+    for (var ind in searchBar['terms']){
+      var obj = {$or: [{'ReportID': {$regex: searchBar['terms'][ind], '$options' : 'i'}}, {'Report_Text': {$regex: searchBar['terms'][ind], '$options' : 'i'}}]};
+      filterQuery['$and'] = filterQuery['$and'].concat(obj);
+    }
+  } else if (searchBar['op'] === "OR") {
+    filterQuery['$or'] = []
+    for (var ind in searchBar['terms']){
+      var obj = {$or: [{'ReportID': {$regex: searchBar['terms'][ind], '$options' : 'i'}}, {'Report_Text': {$regex: searchBar['terms'][ind], '$options' : 'i'}}]};
+      filterQuery['$or'] = filterQuery['$or'].concat(obj);
+    }
+  } else {
+    filterQuery['$or'] = [{'ReportID': {$regex: searchBar['terms'][0], '$options' : 'i'}}, {'Report_Text': {$regex: searchBar['terms'][0], '$options' : 'i'}}];
   }
 
   // Report limit
