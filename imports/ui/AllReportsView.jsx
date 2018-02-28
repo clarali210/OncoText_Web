@@ -103,17 +103,17 @@ export default withTracker(() => {
   if (searchBar['op'] === "AND"){
     filterQuery['$and'] = []
     for (var ind in searchBar['terms']){
-      var obj = {$or: [{'ReportID': {$regex: searchBar['terms'][ind], '$options' : 'i'}}, {'Report_Text': {$regex: searchBar['terms'][ind], '$options' : 'i'}}]};
+      var obj = {$or: [{'ReportID': {$regex: searchBar['terms'][ind], '$options' : 'i'}}, {'EMPI': {$regex: searchBar['terms'][ind], '$options' : 'i'}}, {'Report_Text': {$regex: searchBar['terms'][ind], '$options' : 'i'}}]};
       filterQuery['$and'] = filterQuery['$and'].concat(obj);
     }
   } else if (searchBar['op'] === "OR") {
     filterQuery['$or'] = []
     for (var ind in searchBar['terms']){
-      var obj = {$or: [{'ReportID': {$regex: searchBar['terms'][ind], '$options' : 'i'}}, {'Report_Text': {$regex: searchBar['terms'][ind], '$options' : 'i'}}]};
+      var obj = {$or: [{'ReportID': {$regex: searchBar['terms'][ind], '$options' : 'i'}}, {'EMPI': {$regex: searchBar['terms'][ind], '$options' : 'i'}}, {'Report_Text': {$regex: searchBar['terms'][ind], '$options' : 'i'}}]};
       filterQuery['$or'] = filterQuery['$or'].concat(obj);
     }
   } else {
-    filterQuery['$or'] = [{'ReportID': {$regex: searchBar['terms'][0], '$options' : 'i'}}, {'Report_Text': {$regex: searchBar['terms'][0], '$options' : 'i'}}];
+    filterQuery['$or'] = [{'ReportID': {$regex: searchBar['terms'][0], '$options' : 'i'}}, {'EMPI': {$regex: searchBar['terms'][0], '$options' : 'i'}}, {'Report_Text': {$regex: searchBar['terms'][0], '$options' : 'i'}}];
   }
 
   // Report limit
