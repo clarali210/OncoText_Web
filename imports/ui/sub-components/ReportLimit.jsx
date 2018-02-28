@@ -7,6 +7,7 @@ export default class ReportLimit extends Component {
     localStorage.setItem('reportLimit', e.target.value);
 
     Session.set('checkedReports', {unvalidated: [], validated: []});
+    Session.set('episodes-checkedReports', []);
   }
 
   render() {

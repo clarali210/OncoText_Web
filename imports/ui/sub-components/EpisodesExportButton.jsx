@@ -97,7 +97,7 @@ export default withTracker((props) => {
     exportText: props.exportText,
     currentText: Session.get('exportText'),
     exportData: Session.get('exportData'),
-    checkedReports: Session.get('checkedReports') || [],
+    checkedReports: Session.get('episodes-checkedReports') || [],
     description: props.desc,
     filename: props.filename,
   })

@@ -9,7 +9,7 @@ class EpisodesReportList extends Component {
 
   handleCheckAll(){
     var reports = this.props.reports;
-    var checkedReports = Session.get('checkedReports');
+    var checkedReports = Session.get('episodes-checkedReports');
 
     if (checkedReports.length === reports.length){
       checkedReports = [];
@@ -17,13 +17,13 @@ class EpisodesReportList extends Component {
       checkedReports = this.props.displayedIDs;
     }
 
-    Session.set('checkedReports', checkedReports)
+    Session.set('episodes-checkedReports', checkedReports)
   }
 
   handleCheckReports(newReports) {
     var checkedReports = newReports;
 
-    Session.set('checkedReports', checkedReports);
+    Session.set('episodes-checkedReports', checkedReports);
   }
 
   render() {
@@ -58,8 +58,8 @@ class EpisodesReportList extends Component {
 
 export default withTracker((props) => {
   // Initiate session variables
-  Session.set('checkedReports', Session.get('checkedReports') || []);
-  Session.set('checkAll', false);
+  Session.set('episodes-checkedReports', Session.get('episodes-checkedReports') || []);
+  Session.set('episodes-checkAll', false);
 
   var reports = props.reports;
 
@@ -69,12 +69,12 @@ export default withTracker((props) => {
     displayedIDs.push(report['ReportID']);
   })
 
-  var currentChecked = Session.get('checkedReports');
+  var currentChecked = Session.get('episodes-checkedReports');
   currentChecked = currentChecked.filter((ID) => displayedIDs.includes(ID));
-  Session.set('checkedReports', currentChecked);
+  Session.set('episodes-checkedReports', currentChecked);
 
   // Set checkAll value
-  var checkAll = Session.get('checkAll');
+  var checkAll = Session.get('episodes-checkAll');
   checkAll = true;
   if (displayedIDs.length === 0) {
     checkAll = false;
@@ -85,7 +85,7 @@ export default withTracker((props) => {
       }
     }
   }
-  Session.set('checkAll', checkAll);
+  Session.set('episodes-checkAll', checkAll);
 
   return({
     name: props.name,

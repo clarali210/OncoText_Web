@@ -16,6 +16,7 @@ class SearchBar extends Component {
     localStorage.setItem('searchBar', JSON.stringify(obj));
 
     Session.set('checkedReports', {unvalidated: [], validated: []});
+    Session.set('episodes-checkedReports', []);
   }
 
   handleClearSearch(){
@@ -23,6 +24,7 @@ class SearchBar extends Component {
     localStorage.removeItem('searchBar');
 
     Session.set('checkedReports', {unvalidated: [], validated: []});
+    Session.set('episodes-checkedReports', []);
   }
 
   render(){
