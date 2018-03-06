@@ -25,12 +25,12 @@ class AllReportsView extends Component {
   }
 
   queryToFilename(){
-    var filterQuery = this.props.filterQuery;
-    delete filterQuery['$or'];
-    filterQuery['Search'] = Session.get('searchBar')['string'];
+    var filename = new Date().toJSON().slice(0,10).replace(/_/g,'-');
+    if (Session.get('searchBar')['string'] !== ""){
+      filename = filename + "_" + Session.get('searchBar')['string'];
+    }
 
-    var filename = JSON.stringify(filterQuery);
-    filename = filename.replace(/\"/g, "").replace(/\:/g, "=").replace(/\,/g, "\_")
+    filename = filename.replace(/\"/g, "")
     return (filename);
   }
 
