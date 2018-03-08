@@ -1,7 +1,7 @@
 {
   "Side": {
     "BreastSide": ["l", "r"],
-    "Organ": ["0", "1"]
+    "OrganBreast": ["0", "1"]
   },
   "Invasive": {
     "cancer": ["0", "1"],
