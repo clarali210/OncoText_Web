@@ -33,13 +33,18 @@ class BulkExportButton extends Component {
     } else {
       var exportData = [];
 
-      var headers = ["EMPI", "EpisodeID", "Report_Date"];
+      if (this.props.db == 'episodes'){
+      	 var headers = ["EMPI", "EpisodeID", "Episode_Start_Date", "Episode_Last_Date"];
+      } else {
+      	var headers = ["EMPI", "EpisodeID", "Report_Date", "Report_Text"];
+      }
+
       for (var category in extractions){
         for (var label in extractions[category]){
           headers.push(label);
         }
       }
-      headers = headers.concat(["Report_Date_Time", "filename", "batchID", "train", "Institution", "MRN", "ReportID"])
+      headers = headers.concat(["Report_Text_Segmented", "Report_Date_Time", "filename", "batchID", "train", "Institution", "MRN", "ReportID"])
 
       const self = this;
       Meteor.call(

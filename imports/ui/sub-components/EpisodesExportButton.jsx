@@ -35,7 +35,7 @@ class EpisodesExportButton extends Component {
     } else {
       var exportData = [];
 
-      var headers = ["EMPI", "EpisodeID", "Report_Date"];
+      var headers = ["EMPI", "EpisodeID", "Episode_Start_Date", "Episode_Last_Date"];
       for (var category in extractions){
         for (var label in extractions[category]){
           headers.push(label);

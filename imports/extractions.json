@@ -54,7 +54,7 @@
     "PositiveLN": ["0", "1"]
   },
   "ReportData": {
-    "PathologyType": ["Anatomic", "Cytology"],
+    "PathologyType": ["Anatomic", "Cytology", "Autopsy"],
     "BiopsyType": ["Core", "Excision", "Other", "9"],
     "train": ["0", "1"]
   },
@@ -73,5 +73,12 @@
     "OrganProstate": ["0", "1"],
     "OrganThyroid": ["0", "1"],
     "OrganUterus": ["0", "1"]
+  },
+  "Pancreas": {
+    "PancNeuroendocrine": ["0", "1"],
+    "PancCa": ["0", "1"],
+    "PancCaDuctalAdenocarcinoma": ["0", "1"],
+    "PancCaAcinarCellCystadenocarcinoma": ["0", "1"],
+    "PancIPMN": ["0", "1"]
   }
 }
