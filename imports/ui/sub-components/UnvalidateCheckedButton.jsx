@@ -4,7 +4,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 class UnvalidateCheckedButton extends Component {
 
   handleUnvalidate(){
-    Meteor.call('reports.unvalidateChecked', this.props.checkedValidated);
+    Meteor.call('reports.unvalidateChecked', this.props.organ, this.props.checkedValidated);
   }
 
   handleClick(){
@@ -27,6 +27,7 @@ class UnvalidateCheckedButton extends Component {
 
 export default withTracker((props) => {
   return({
-    checkedValidated: Session.get('checkedReports')['validated']
+    organ: props.organ,
+    checkedValidated: Session.get(props.organ+'-checkedReports')['validated']
   });
 })(UnvalidateCheckedButton);

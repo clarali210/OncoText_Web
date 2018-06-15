@@ -14,7 +14,7 @@ class ValidateDisplayedButton extends Component {
         validatedLabels.push(extraction);
       }
     }
-    Meteor.call('reports.updateReport', this.props.currentReport['_id'], {validatedLabels: validatedLabels});
+    Meteor.call('reports.updateReport', this.props.organ, this.props.currentReport['_id'], {validatedLabels: validatedLabels});
 
     this.handleNextReport("unvalidated");
   }
@@ -24,19 +24,19 @@ class ValidateDisplayedButton extends Component {
     for (var ind in this.props.checkedDisplayFilters){
       validatedLabels = validatedLabels.filter((extraction) => {return extraction != this.props.checkedDisplayFilters[ind]});
     }
-    Meteor.call('reports.updateReport', this.props.currentReport['_id'], {validatedLabels: validatedLabels});
+    Meteor.call('reports.updateReport', this.props.organ, this.props.currentReport['_id'], {validatedLabels: validatedLabels});
 
     this.handleNextReport("validated");
   }
 
   handleNextReport(validated){
-    var displayed_ids = JSON.parse(localStorage.getItem('report_ids'))[validated];
+    var displayed_ids = JSON.parse(localStorage.getItem(this.props.organ+'-report_ids'))[validated];
     var currentInd = displayed_ids.indexOf(this.props.currentReport['_id']._str);
     if (currentInd === displayed_ids.length-1){
-      FlowRouter.go("/");
+      FlowRouter.go("/" + this.props.organ);
     } else {
       ReactDOM.findDOMNode(this).scrollTop = 0;
-      FlowRouter.go("/reports/" + displayed_ids[currentInd+1]);
+      FlowRouter.go("/" + this.props.organ + "/reports/" + displayed_ids[currentInd+1]);
     }
   }
 
@@ -110,9 +110,10 @@ export default withTracker((props) => {
   }
 
   return({
+    organ: props.organ,
     currentReport: props.currentReport,
     allValidated: allValidated,
-    checkedDisplayFilters: Session.get('checkedDisplayFilters'),
-    prevDisplayedReports: Session.get('prevDisplayedReports')
+    checkedDisplayFilters: Session.get(props.organ+'-checkedDisplayFilters'),
+    prevDisplayedReports: Session.get(props.organ+'-prevDisplayedReports')
   });
 })(ValidateDisplayedButton);

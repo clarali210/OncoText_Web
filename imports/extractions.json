@@ -1,84 +1,129 @@
 {
-  "Side": {
-    "BreastSide": ["l", "r"],
-    "OrganBreast": ["0", "1"]
+  "OrganBreast": {
+    "Invasive": {
+      "cancer": ["0", "1"],
+      "CancerInvasive": ["0", "1"],
+      "IDC": ["0", "1"],
+      "ILC": ["0", "1"],
+      "TubularCancer": ["0", "1"],
+      "CancerInvNOS": ["0", "1"],
+      "DCIS": ["0", "1"],
+      "InsituNOS": ["0", "1"],
+      "GradeMaxInvasive": ["1", "2", "3", "9"],
+      "GradeMaxDCIS": ["1", "2", "3", "9"],
+      "CancerNotOfBreastOrigin": ["0", "1"]
+    },
+    "Atypias": {
+      "ADH": ["0", "1"],
+      "ALH": ["0", "1"],
+      "LCIS": ["0", "1"],
+      "LobularNeoplasia": ["0", "1"],
+      "FlatEpithelial": ["0", "1"],
+      "ADH_DCIS": ["0", "1"]
+    },
+    "TumorMarkers": {
+      "ER": ["0", "1", "9"],
+      "PR": ["0", "1", "9"],
+      "her2": ["0", "1", "9"],
+      "Her2Fish": ["0", "1", "9"],
+      "Her2_IHC": ["0", "1", "2", "3", "9"]
+    },
+    "Phylodes": {
+      "Phyllodes": ["0", "1"],
+      "SuspiciousForPhyllodes": ["0", "1"]
+    },
+    "LymphNodes": {
+      "ITC": ["0", "1"],
+      "NodeTissue": ["0", "1"]
+    },
+    "CancerFeatures": {
+      "LVI": ["0", "1", "9"],
+      "BVI": ["0", "1", "9"],
+      "ECE": ["0", "1", "9"]
+    },
+    "Other": {
+      "Papill": ["0", "1"],
+      "CancerSuspicious": ["0", "1"],
+      "CancerNOS": ["0", "1"],
+      "BluntAdenosis": ["0", "1"],
+      "CancerInvInsituNOS": ["0", "1"],
+      "InvasiveSuspicious": ["0", "1"],
+      "PositiveLN": ["0", "1"]
+    },
+    "ReportData": {
+      "BreastSide": ["l", "r"],
+      "PathologyType": ["Anatomic", "Cytology", "Autopsy"],
+      "BiopsyType": ["Core", "Excision", "Other", "9"],
+      "train": ["0", "1"]
+    }
   },
-  "Invasive": {
-    "cancer": ["0", "1"],
-    "CancerInvasive": ["0", "1"],
-    "IDC": ["0", "1"],
-    "ILC": ["0", "1"],
-    "TubularCancer": ["0", "1"],
-    "CancerInvNOS": ["0", "1"],
-    "DCIS": ["0", "1"],
-    "InsituNOS": ["0", "1"],
-    "GradeMaxInvasive": ["1", "2", "3", "9"],
-    "GradeMaxDCIS": ["1", "2", "3", "9"],
-    "CancerNotOfBreastOrigin": ["0", "1"]
+
+  "OrganPancreas": {
+    "Cancer": {
+      "PancNeuroendocrine": ["0", "1"],
+      "PancCa": ["0", "1"],
+      "PancCaDuctalAdenocarcinoma": ["0", "1"],
+      "PancCaAcinarCellCystadenocarcinoma": ["0", "1"],
+      "PancIPMN": ["0", "1"]
+    },
+    "ReportData": {
+      "PathologyType": ["Anatomic", "Cytology", "Autopsy"],
+      "BiopsyType": ["Core", "Excision", "Other", "9"],
+      "train": ["0", "1"]
+    }
   },
-  "Atypias": {
-    "ADH": ["0", "1"],
-    "ALH": ["0", "1"],
-    "LCIS": ["0", "1"],
-    "LobularNeoplasia": ["0", "1"],
-    "FlatEpithelial": ["0", "1"],
-    "ADH_DCIS": ["0", "1"]
-  },
-  "TumorMarkers": {
-    "ER": ["0", "1", "9"],
-    "PR": ["0", "1", "9"],
-    "her2": ["0", "1", "9"],
-    "Her2Fish": ["0", "1", "9"],
-    "Her2_IHC": ["0", "1", "2", "3", "9"]
-  },
-  "Phylodes": {
-    "Phyllodes": ["0", "1"],
-    "SuspiciousForPhyllodes": ["0", "1"]
-  },
-  "LymphNodes": {
-    "ITC": ["0", "1"],
-    "NodeTissue": ["0", "1"]
-  },
-  "CancerFeatures": {
-    "LVI": ["0", "1", "9"],
-    "BVI": ["0", "1", "9"],
-    "ECE": ["0", "1", "9"]
-  },
-  "Other": {
-    "Papill": ["0", "1"],
-    "CancerSuspicious": ["0", "1"],
-    "CancerNOS": ["0", "1"],
-    "BluntAdenosis": ["0", "1"],
-    "CancerInvInsituNOS": ["0", "1"],
-    "InvasiveSuspicious": ["0", "1"],
-    "PositiveLN": ["0", "1"]
-  },
-  "ReportData": {
-    "PathologyType": ["Anatomic", "Cytology", "Autopsy"],
-    "BiopsyType": ["Core", "Excision", "Other", "9"],
-    "train": ["0", "1"]
-  },
-  "OrganFields": {
-    "OrganAdrenal": ["0", "1"],
-    "OrganBladder": ["0", "1"],
-    "OrganCervix": ["0", "1"],
-    "OrganColon": ["0", "1"],
-    "OrganDuodenum": ["0", "1"],
-    "OrganEsophagus": ["0", "1"],
-    "OrganKidney": ["0", "1"],
-    "OrganLiver": ["0", "1"],
-    "OrganLung": ["0", "1"],
-    "OrganOvary": ["0", "1"],
-    "OrganPancreas": ["0", "1"],
-    "OrganProstate": ["0", "1"],
-    "OrganThyroid": ["0", "1"],
-    "OrganUterus": ["0", "1"]
-  },
-  "Pancreas": {
-    "PancNeuroendocrine": ["0", "1"],
-    "PancCa": ["0", "1"],
-    "PancCaDuctalAdenocarcinoma": ["0", "1"],
-    "PancCaAcinarCellCystadenocarcinoma": ["0", "1"],
-    "PancIPMN": ["0", "1"]
+
+  "OrganProstate": {
+    "Cancer": {
+      "ProstateCa": ["0", "1", "9"],
+      "Pr_CaAdeno": ["0", "1", "9"],
+      "Pr_CancerSuspicious": ["0", "1"],
+      "PeriNeuralInvasion": ["0", "1", "9"],
+      "ExtraPr_Ext": ["0", "1"]
+    },
+    "Pre-Cancer": {
+      "Pr_PreCaASAP": ["0", "1"],
+      "Pr_PreCaHiGradePIN": ["0", "1"],
+      "Pr_PreCaLowGradePIN": ["0", "1"],
+      "Pr_PreCaPIA": ["0", "1"]
+    },
+    "Numerical": {
+      "Pr_NumCoresInvolved": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+      "Pr_TotalCoresDone": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+      "Pr_LengthCore": [],
+      "Pr_LengthCore2ndLong": [],
+      "Pr_LengthCore3rdLong": [],
+      "Pr_LengthCoreInvolvedLong": [],
+      "Pr_LengthCoreInvolved2ndLong": [],
+      "Pr_LengthCoreInvolved3rdLong": [],
+      "Pr_PercentCoreInvolvedLong": [],
+      "Pr_PercentCoreInvolved2ndLong": [],
+      "Pr_PercentCoreInvolved3rdLong": []
+    },
+    "Location": {
+      "Pr_Laterality": ["L", "R", "B", "9"],
+      "Pr_Seminal_vesicle": ["0", "1"],
+      "Pr_Urethra": ["0", "1"],
+      "Pr_Apex": ["0", "1"],
+      "Pr_Mid_Apex": ["0", "1"],
+      "Pr_Middle": ["0", "1"],
+      "Pr_Base": ["0", "1"],
+      "Pr_Mid_Base": ["0", "1"],
+      "Pr_Peripheral": ["0", "1"],
+      "Pr_Central": ["0", "1"],
+      "Pr_Transitional": ["0", "1"],
+      "Pr_AntFibromuscular": ["0", "1"],
+      "Pr_Anterior": ["0", "1"],
+      "Pr_Posterior": ["0", "1"],
+      "Pr_Medial": ["0", "1"],
+      "Pr_Lateral": ["0", "1"],
+      "Pr_Section": ["0", "1", "9"]
+    },
+    "ReportData": {
+      "PathologyType": ["Anatomic", "Cytology", "Autopsy"],
+      "BiopsyType": ["Core", "Excision", "Other", "9"],
+      "SegmentType": ["Header", "Diagnosis", "Description"],
+      "train": ["0", "1"]
+    }
   }
 }

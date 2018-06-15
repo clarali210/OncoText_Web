@@ -6,9 +6,9 @@ import Toggle from 'react-toggle';
 class ReportText extends Component {
 
   toggleSegmented(){
-    var segmented = Session.get('segmented');
-    Session.set('segmented', !segmented);
-    localStorage.setItem('segmented', !segmented);
+    var segmented = Session.get(this.props.organ+'-segmented');
+    Session.set(this.props.organ+'-segmented', !segmented);
+    localStorage.setItem(this.props.organ+'-segmented', !segmented);
   }
 
   render(){
@@ -41,10 +41,11 @@ ReportText.propTypes = {
 };
 
 export default withTracker((props) => {
-  Session.set('segmented', JSON.parse(localStorage.getItem('segmented') || 'false'));
+  Session.set(props.organ+'-segmented', JSON.parse(localStorage.getItem(props.organ+'-segmented') || 'false'));
 
   return({
+    organ: props.organ,
     currentReport: props.currentReport,
-    segmented: Session.get('segmented')
+    segmented: Session.get(props.organ+'-segmented')
   });
 })(ReportText);

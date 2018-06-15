@@ -4,20 +4,18 @@ import { withTracker } from 'meteor/react-meteor-data';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-var extractions = require('/imports/extractions.json');
-
 class Extractions extends Component {
 
   handleValueChange(extractionName, newValue){
     var updateObj = {};
     updateObj[extractionName] = newValue;
-    Meteor.call('reports.updateReport', this.props.currentReport['_id'], updateObj);
+    Meteor.call('reports.updateReport', this.props.organ, this.props.currentReport['_id'], updateObj);
   }
 
   renderPossibleValues(extractionName){
-    for (var category in extractions){
-      if (Object.keys(extractions[category]).includes(extractionName)){
-        var extractionValues = extractions[category][extractionName];
+    for (var category in this.props.extractions){
+      if (Object.keys(this.props.extractions[category]).includes(extractionName)){
+        var extractionValues = this.props.extractions[category][extractionName];
       }
     }
 
@@ -74,13 +72,11 @@ class Extractions extends Component {
   }
 }
 
-Extractions.propTypes = {
-  currentReport: PropTypes.object.isRequired
-};
-
 export default withTracker((props) => {
   return ({
+    organ: props.organ,
+    extractions: props.extractions,
     currentReport: props.currentReport,
-    checkedDisplayFilters: Session.get('checkedDisplayFilters')
+    checkedDisplayFilters: Session.get(props.organ+'-checkedDisplayFilters')
   });
 })(Extractions);

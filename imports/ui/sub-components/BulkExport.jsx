@@ -7,10 +7,10 @@ import Dropzone from 'react-dropzone'
 class BulkExport extends Component {
 
   handleValueChange(field, newValue){
-    var info = Session.get('bulkExportInfo');
+    var info = Session.get(this.props.organ+'-bulkExportInfo');
     info[field] = newValue;
-    Session.set('bulkExportInfo', info);
-    localStorage.setItem('bulkExportInfo', JSON.stringify({'db': info['db'], 'key': info['key']}));
+    Session.set(this.props.organ+'-bulkExportInfo', info);
+    localStorage.setItem(this.props.organ+'-bulkExportInfo', JSON.stringify({'db': info['db'], 'key': info['key']}));
   }
 
   handleOnDrop(files){
@@ -21,10 +21,10 @@ class BulkExport extends Component {
     fr.onload = (e) => {
       var list = fr.result.replace(/\r|\n|\r\n|\s/g, "").split(",");
 
-      var info = Session.get('bulkExportInfo');
+      var info = Session.get(this.props.organ+'-bulkExportInfo');
       info['filename'] = filename;
       info['list'] = list;
-      Session.set('bulkExportInfo', info);
+      Session.set(this.props.organ+'-bulkExportInfo', info);
     }
   }
 
@@ -53,11 +53,12 @@ class BulkExport extends Component {
   }
 }
 
-export default withTracker(() => {
+export default withTracker((props) => {
 
-  var info = Session.get('bulkExportInfo');
+  var info = Session.get(props.organ+'-bulkExportInfo');
 
   return({
+    organ: props.organ,
     db: info['db'],
     reportKey: info['key'],
     filename: info['filename'],

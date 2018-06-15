@@ -7,25 +7,25 @@ import SelectField from 'material-ui/SelectField';
 class FilterItem extends Component {
 
   handleChangeFilter(filterName, newValue){
-    var filters = Session.get('filters');
+    var filters = Session.get(this.props.organ+'-filters');
     filters[filterName] = newValue;
 
-    Session.set('filters', filters);
-    localStorage.setItem('filters', JSON.stringify(Session.get('filters')));
+    Session.set(this.props.organ+'-filters', filters);
+    localStorage.setItem(this.props.organ+'-filters', JSON.stringify(Session.get(this.props.organ+'-filters')));
 
-    Session.set('checkedReports', {unvalidated: [], validated: []});
-    Session.set('episodes-checkedReports', []);
+    Session.set(this.props.organ+'-checkedReports', {unvalidated: [], validated: []});
+    Session.set(this.props.organ+'-episodes-checkedReports', []);
   }
 
   handleClearFilter(filterName){
-    var filters = Session.get('filters');
+    var filters = Session.get(this.props.organ+'-filters');
     filters[filterName] = null;
 
-    Session.set('filters', filters);
-    localStorage.setItem('filters', JSON.stringify(Session.get('filters')));
+    Session.set(this.props.organ+'-filters', filters);
+    localStorage.setItem(this.props.organ+'-filters', JSON.stringify(Session.get(this.props.organ+'-filters')));
 
-    Session.set('checkedReports', {unvalidated: [], validated: []});
-    Session.set('episodes-checkedReports', []);
+    Session.set(this.props.organ+'-checkedReports', {unvalidated: [], validated: []});
+    Session.set(this.props.organ+'-episodes-checkedReports', []);
   }
 
   render() {
@@ -39,7 +39,7 @@ class FilterItem extends Component {
     }
 
     // If this filter currently has a value, add a delete button for that individual filter
-    if (Session.get('filters')[filterName] !== null){
+    if (Session.get(this.props.organ+'-filters')[filterName] !== null){
       var deleteButton = (
         <button className="delete" onClick={() => this.handleClearFilter(filterName)}>
           &times;
@@ -67,12 +67,10 @@ class FilterItem extends Component {
   }
 }
 
-export default withTracker(() => {
+export default withTracker((props) => {
   return({
-    filters: Session.get('filters')
+    organ: props.organ,
+    extraction: props.extraction,
+    filters: Session.get(props.organ+'-filters')
   });
 })(FilterItem);
-
-FilterItem.propTypes = {
-  extraction: PropTypes.array.isRequired,
-};

@@ -5,41 +5,47 @@ import { Annotations } from './annotations.js';
 
 var extractions = require('/imports/extractions.json');
 
-export const Reports = new Mongo.Collection('reports');
-global.Reports = Reports;
+export const Reports = {};
 
+for (const organ in extractions){
+  const organ_extractions = extractions[organ];
+  Reports[organ] = new Mongo.Collection(organ+'-reports');
 
-// This code only runs on the server
+  // This code only runs on the server
+  if (Meteor.isServer) {
+    Meteor.publish(organ+'-reports', function reportsPublication(query, limit) {
+      return Reports[organ].find(query, {limit: limit});
+    });
+  };
+}
+
 if (Meteor.isServer) {
-  Meteor.publish('reports', function reportsPublication(query, limit) {
-    return Reports.find(query, {limit: limit});
-  });
-
+  
   Meteor.methods({
-    'reports.serverQuery'(query){
-      numReps = Reports.find(query).count();
+    'reports.serverQuery'(organ, query){
+      numReps = Reports[organ].find(query).count();
       return numReps;
     },
 
-    'reports.exportChecked'(key, checkedReports){
+    'reports.exportChecked'(organ, key, checkedReports){
       if (key == "ReportID"){
         var checkedKeyValues = checkedReports;
       } else {
         var checkedKeyValues = [];
         for (var ind in checkedReports){
-          var report = Reports.find({ReportID: checkedReports[ind]}).fetch()[0];
+          var report = Reports[organ].find({ReportID: checkedReports[ind]}).fetch()[0];
           if ((report !== undefined) && (!checkedKeyValues.includes(report[key]))){
             checkedKeyValues.push(report[key]);
           }
-	      }
+        }
       }
-      return Meteor.call('reports.fetchReports', key, checkedKeyValues);
+      return Meteor.call('reports.fetchReports', organ, key, checkedKeyValues);
     },
 
-    'reports.fetchReports'(key, keyValues){
+    'reports.fetchReports'(organ, key, keyValues){
       var reports = [];
       for (var ind in keyValues){
-        reports = reports.concat(Reports.find({[key]: keyValues[ind]}).fetch());
+        reports = reports.concat(Reports[organ].find({[key]: keyValues[ind]}).fetch());
       }
       reports = reports.filter((n) => { return n != undefined });
       return reports;
@@ -47,24 +53,23 @@ if (Meteor.isServer) {
   })
 }
 
-
 Meteor.methods({
-  'reports.updateReport'(id, updateObj) {
-    Reports.update(id, {
+  'reports.updateReport'(organ, id, updateObj) {
+    Reports[organ].update(id, {
       $set: updateObj
     });
   },
 
-  'reports.unvalidateChecked'(checkedReports){
+  'reports.unvalidateChecked'(organ, checkedReports){
     for (var ind in checkedReports){
-      var report = Reports.find({'ReportID': checkedReports[ind]}).fetch()[0];
-      Meteor.call('reports.updateReport', report['_id'], {validatedLabels: []});
+      var report = Reports[organ].find({'ReportID': checkedReports[ind]}).fetch()[0];
+      Meteor.call('reports.updateReport', organ, report['_id'], {validatedLabels: []});
     }
   },
 
   // For each report with at least one validated label, add it to Annotations collection
-  'reports.submitAndRemoveValidated'() {
-    Reports.find({ $where: "this.validatedLabels.length > 0" }).forEach(
+  'reports.submitAndRemoveValidated'(organ) {
+    Reports[organ].find({ $where: "this.validatedLabels.length > 0" }).forEach(
       function(report){
         // For each validated label, add its value to the corresponding new report
         var rep = {
@@ -97,26 +102,26 @@ Meteor.methods({
 
         // Add the newly submitted labels to submittedLabels
         // and clear the array of validatedLabels from the current report in Reports
-        Reports.update(report['_id'], {
+        Reports[organ].update(report['_id'], {
           $set: { submittedLabels: report.submittedLabels.concat(report.validatedLabels),
                   validatedLabels: [] }
         });
         // If there are no more unvalidated labels in the current report,
         // remove it from the Reports collection
         var totalExtractionsNum = 0;
-        for (var category in extractions){
-          totalExtractionsNum += Object.keys(extractions[category]).length;
+        for (var category in organ_extractions){
+          totalExtractionsNum += Object.keys(organ_extractions[category]).length;
         }
         console.log(totalExtractionsNum);
         if (report.submittedLabels.concat(report.validatedLabels).length === totalExtractionsNum){
-          Reports.remove({ _id: report['_id'] });
+          Reports[organ].remove({ _id: report['_id'] });
         }
       }
     );
   },
 
   // Remove all unvalidated reports with no validated labels from the Reports collection
-  'reports.removeUnvalidated'() {
-    Reports.remove({ $where: "this.validatedLabels.length === 0" })
+  'reports.removeUnvalidated'(organ) {
+    Reports[organ].remove({ $where: "this.validatedLabels.length === 0" })
   }
-});
+})

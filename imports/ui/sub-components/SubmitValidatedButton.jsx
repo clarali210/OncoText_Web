@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 export default class SubmitValidatedButton extends Component {
 
   handleSubmitValidated(){
+    const self = this;
     // Creates a confimation popup in brower window
     new Confirmation({
       message: "Please confirm that you want to submit validated reports. Once you submit validated reports, they will be used to train the automatic annotator.",
@@ -15,7 +16,7 @@ export default class SubmitValidatedButton extends Component {
     }, function (ok) {
       // If user confirms submission, meteor call to submit validated reports
       if (ok) {
-        Meteor.call('reports.submitAndRemoveValidated');
+        Meteor.call('reports.submitAndRemoveValidated', self.props.organ);
       };
     });
   }
@@ -39,5 +40,6 @@ export default class SubmitValidatedButton extends Component {
 }
 
 SubmitValidatedButton.propTypes = {
+  organ: PropTypes.string.isRequired,
   validatedReports: PropTypes.array.isRequired,
 };

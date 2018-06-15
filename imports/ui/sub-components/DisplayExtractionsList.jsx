@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Checkbox, CheckboxGroup } from 'react-checkbox-group';
 
-var extractions = require('/imports/extractions.json');
-
 class DisplayExtractionsList extends Component {
 
   handleCheckAllDisplay() {
-    var checkedDisplayFilters = Session.get('checkedDisplayFilters');
+    var checkedDisplayFilters = Session.get(this.props.organ+'-checkedDisplayFilters');
 
     if (checkedDisplayFilters.length === this.props.extractionLabels.length){
       checkedDisplayFilters = [];
@@ -16,29 +14,29 @@ class DisplayExtractionsList extends Component {
       checkedDisplayFilters = this.props.extractionLabels;
     }
 
-    Session.set('checkedDisplayFilters', checkedDisplayFilters);
-    localStorage.setItem('checkedDisplayFilters', JSON.stringify(checkedDisplayFilters));
+    Session.set(this.props.organ+'-checkedDisplayFilters', checkedDisplayFilters);
+    localStorage.setItem(this.props.organ+'-checkedDisplayFilters', JSON.stringify(checkedDisplayFilters));
   }
 
   handleCheckDisplayItem(newDisplays) {
-    Session.set('checkedDisplayFilters', newDisplays);
-    localStorage.setItem('checkedDisplayFilters', JSON.stringify(newDisplays));
+    Session.set(this.props.organ+'-checkedDisplayFilters', newDisplays);
+    localStorage.setItem(this.props.organ+'-checkedDisplayFilters', JSON.stringify(newDisplays));
     console.log(newDisplays);
   }
 
   handleToggleCategories(category){
-    var filterCategories = Session.get('filterCategories');
+    var filterCategories = Session.get(this.props.organ+'-filterCategories');
     filterCategories[category] = !filterCategories[category];
 
-    Session.set('filterCategories', filterCategories);
-    localStorage.setItem('filterCategories', JSON.stringify(Session.get('filterCategories')));
+    Session.set(this.props.organ+'-filterCategories', filterCategories);
+    localStorage.setItem(this.props.organ+'-filterCategories', JSON.stringify(Session.get(this.props.organ+'-filterCategories')));
   }
 
   render(){
     var displayFilterList = [];
 
     // If the dropdown category is opened, display corresponding filters
-    for (var category in extractions) {
+    for (var category in this.props.extractions) {
       const categoryName = category;
 
       if (this.props.filterCategories[category]){
@@ -47,7 +45,7 @@ class DisplayExtractionsList extends Component {
             – {category}
           </div>
         );
-        for (var filterName in extractions[category]){
+        for (var filterName in this.props.extractions[category]){
           displayFilterList.push(
             <div className="display-filter-item" key={filterName+"-display-div"}>
               <Checkbox value={filterName} id={filterName}/>
@@ -81,33 +79,29 @@ class DisplayExtractionsList extends Component {
   }
 }
 
-DisplayExtractionsList.propTypes = {
-  extractionLabels: PropTypes.array.isRequired,
-};
-
 export default withTracker((props) => {
   // Initialize session variables
-  var filterCategories = JSON.parse(localStorage.getItem('filterCategories') || '{}');
+  var filterCategories = JSON.parse(localStorage.getItem(props.organ+'-filterCategories') || '{}');
   if (Object.keys(filterCategories).length === 0){
-    for (var category in extractions){
+    for (var category in props.extractions){
       filterCategories[category] = false;
     }
   }
-  Session.set('filterCategories', filterCategories);
+  Session.set(props.organ+'-filterCategories', filterCategories);
 
-  var checkedDisplayFilters = JSON.parse(localStorage.getItem('checkedDisplayFilters') || '[]');
-  Session.set('checkedDisplayFilters', checkedDisplayFilters);
+  var checkedDisplayFilters = JSON.parse(localStorage.getItem(props.organ+'-checkedDisplayFilters') || '[]');
+  Session.set(props.organ+'-checkedDisplayFilters', checkedDisplayFilters);
 
   if (checkedDisplayFilters.length === props.extractionLabels.length){
-    Session.set('checkAllDisplay', true);
+    Session.set(props.organ+'-checkAllDisplay', true);
   } else {
-    Session.set('checkAllDisplay', false);
+    Session.set(props.organ+'-checkAllDisplay', false);
   }
 
   return({
-    filterCategories: Session.get('filterCategories'),
-    checkedDisplayFilters: Session.get('checkedDisplayFilters'),
-    checkAllDisplay: Session.get('checkAllDisplay'),
+    filterCategories: Session.get(props.organ+'-filterCategories'),
+    checkedDisplayFilters: Session.get(props.organ+'-checkedDisplayFilters'),
+    checkAllDisplay: Session.get(props.organ+'-checkAllDisplay'),
     extractionLabels: props.extractionLabels
   });
 })(DisplayExtractionsList);
