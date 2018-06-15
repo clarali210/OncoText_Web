@@ -3,49 +3,50 @@ import { Mongo } from 'meteor/mongo';
 
 var extractions = require('/imports/extractions.json');
 
-export const Episodes = new Mongo.Collection('episodes');
-global.Episodes = Episodes;
+export const Episodes = {};
 
+for (const organ in extractions){
+  const organ_extractions = extractions[organ];
+  Episodes[organ] = new Mongo.Collection(organ+'-episodes');
 
-// This code only runs on the server
+  // This code only runs on the server
+  if (Meteor.isServer) {
+    Meteor.publish(organ+'-episodes', function episodesPublication(query, limit) {
+      return Episodes[organ].find(query, {limit: limit});
+    });
+  };
+}
+
 if (Meteor.isServer) {
-  Meteor.publish('episodes', function episodesPublication(query, limit) {
-    return Episodes.find(query, {limit: limit});
-  });
 
   Meteor.methods({
-    'episodes.serverQuery'(query){
-      numReps = Episodes.find(query).count();
+    'episodes.serverQuery'(organ, query){
+      numReps = Episodes[organ].find(query).count();
       return numReps;
     },
 
-    'episodes.exportChecked'(key, checkedReports){
+    'episodes.exportChecked'(organ, key, checkedReports){
       if (key == "ReportID"){
 	      var checkedKeyValues = checkedReports;
       } else {
         var checkedKeyValues = [];
         for (var ind in checkedReports){
-          var report = Episodes.find({ReportID: checkedReports[ind]}).fetch()[0];
+          var report = Episodes[organ].find({ReportID: checkedReports[ind]}).fetch()[0];
           if ((report !== undefined) && (!checkedKeyValues.includes(report[key]))){
             checkedKeyValues.push(report[key]);
           }
 	      }
       }
-      return Meteor.call('episodes.fetchReports', key, checkedKeyValues);
+      return Meteor.call('episodes.fetchReports', organ, key, checkedKeyValues);
     },
 
-    'episodes.fetchReports'(key, keyValues){
+    'episodes.fetchReports'(organ, key, keyValues){
       var reports = [];
       for (var ind in keyValues){
-        reports = reports.concat(Episodes.find({[key]: keyValues[ind]}).fetch());
+        reports = reports.concat(Episodes[organ].find({[key]: keyValues[ind]}).fetch());
       }
       reports = reports.filter((n) => { return n != undefined });
       return reports;
     }
   })
 }
-
-
-Meteor.methods({
-
-});

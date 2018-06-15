@@ -12,19 +12,19 @@ class SearchBar extends Component {
     } else {
       var obj = {"op": "", "terms": [entry], "string": entry}
     }
-    Session.set('searchBar', obj);
-    localStorage.setItem('searchBar', JSON.stringify(obj));
+    Session.set(this.props.organ+'-searchBar', obj);
+    localStorage.setItem(this.props.organ+'-searchBar', JSON.stringify(obj));
 
-    Session.set('checkedReports', {unvalidated: [], validated: []});
-    Session.set('episodes-checkedReports', []);
+    Session.set(this.props.organ+'-checkedReports', {unvalidated: [], validated: []});
+    Session.set(this.props.organ+'-episodes-checkedReports', []);
   }
 
   handleClearSearch(){
-    Session.set('searchBar', {"op": "", "terms": [""], "string": ""});
-    localStorage.removeItem('searchBar');
+    Session.set(this.props.organ+'-searchBar', {"op": "", "terms": [""], "string": ""});
+    localStorage.removeItem(this.props.organ+'-searchBar');
 
-    Session.set('checkedReports', {unvalidated: [], validated: []});
-    Session.set('episodes-checkedReports', []);
+    Session.set(this.props.organ+'-checkedReports', {unvalidated: [], validated: []});
+    Session.set(this.props.organ+'-episodes-checkedReports', []);
   }
 
   render(){
@@ -40,8 +40,9 @@ class SearchBar extends Component {
   }
 }
 
-export default withTracker(() => {
+export default withTracker((props) => {
   return ({
-    string: Session.get('searchBar')['string'],
+    organ: props.organ,
+    string: Session.get(props.organ+'-searchBar')['string'],
   })
 })(SearchBar);

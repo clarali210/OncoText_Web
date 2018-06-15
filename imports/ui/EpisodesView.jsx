@@ -12,22 +12,17 @@ import EpisodesReportList from './sub-components/EpisodesReportList.jsx';
 import BulkExportButton from './sub-components/BulkExportButton.jsx';
 import BulkExport from './sub-components/BulkExport.jsx';
 
-import { Episodes } from '/imports/api/episodes.js';
-
-var extractions = require('/imports/extractions.json');
-
-
 class EpisodesView extends Component {
 
   constructor(props) {
     super(props);
-    Session.set('episodes-query', "...");
+    Session.set(props.organ+'-episodes-query', "...");
   }
 
   queryToFilename(){
     var filterQuery = this.props.filterQuery;
     delete filterQuery['$or'];
-    filterQuery['Search'] = Session.get('searchBar')['string'];
+    filterQuery['Search'] = Session.get(this.props.organ+'-searchBar')['string'];
 
     var filename = JSON.stringify(filterQuery);
     filename = filename.replace(/\"/g, "").replace(/\:/g, "=").replace(/\,/g, "\_")
@@ -40,29 +35,33 @@ class EpisodesView extends Component {
 
         <div className="col-md-12 view-bar row row-same-height centered">
           <div className="report-limit">
-            <ReportLimit/>
+            <ReportLimit organ={this.props.organ}/>
           </div>
           <div className="view-bar-title">
             <h2>Viewing All</h2>
             <div id="num_report"><i>{this.props.query} matching query</i></div>
           </div>
           <div className="search">
-            <SearchBar/>
+            <SearchBar organ={this.props.organ}/>
           </div>
         </div>
 
         <div className="col-md-12 centered">
           <div className="col-md-2 centered">
-            <FilterList/>
+            <FilterList organ={this.props.organ} extractions={this.props.extractions}/>
           </div>
           <div className="col-md-6 centered">
-            <EpisodesExportButton exportKey="ReportID" exportText="Export Selected" desc="This exports the set of single path reports selected below." filename={this.queryToFilename()+".csv"}/>
-            <EpisodesExportButton exportKey="EMPI" exportText="Export All Reports" desc="This exports ALL path reports associated with the patients selected." filename={this.queryToFilename()+"_All.csv"}/>
-            <EpisodesReportList name="episodes" reports={this.props.reports}/>
+            <EpisodesExportButton organ={this.props.organ} extractions={this.props.extractions} exportKey="ReportID"
+            exportText="Export Selected" desc="This exports the set of single path reports selected below."
+            filename={this.queryToFilename()+".csv"}/>
+            <EpisodesExportButton organ={this.props.organ} extractions={this.props.extractions} exportKey="EMPI"
+            exportText="Export All Reports" desc="This exports ALL path reports associated with the patients selected."
+            filename={this.queryToFilename()+"_All.csv"}/>
+            <EpisodesReportList organ={this.props.organ} name="episodes" reports={this.props.reports}/>
           </div>
           <div className="col-md-4 centered">
-            <BulkExportButton/>
-            <BulkExport/>
+            <BulkExportButton organ={this.props.organ} extractions={this.props.extractions}/>
+            <BulkExport organ={this.props.organ}/>
           </div>
         </div>
 
@@ -71,9 +70,14 @@ class EpisodesView extends Component {
   }
 }
 
-export default withTracker(() => {
+export default withTracker((props) => {
+
+  const db = props.db;
+  const organ = props.organ;
+  const extractions = props.extractions;
+
   // Initialize Session values
-  var prevFilters = JSON.parse(localStorage.getItem('filters') || '{}');
+  var prevFilters = JSON.parse(localStorage.getItem(organ+'-filters') || '{}');
   if (Object.keys(prevFilters).length === 0){
     for (var category in extractions){
       for (var filterName in extractions[category]){
@@ -81,16 +85,16 @@ export default withTracker(() => {
       }
     }
   }
-  Session.set('filters', prevFilters);
-  Session.set('searchBar', JSON.parse(localStorage.getItem('searchBar') || '{"op": "", "terms": [""], "string": ""}'));
-  Session.set('reportLimit', localStorage.getItem('reportLimit') || "1");
+  Session.set(organ+'-filters', prevFilters);
+  Session.set(organ+'-searchBar', JSON.parse(localStorage.getItem(organ+'-searchBar') || '{"op": "", "terms": [""], "string": ""}'));
+  Session.set(organ+'-reportLimit', localStorage.getItem(organ+'-reportLimit') || "1");
 
 
   //Subscribe only to filtered reports
   var filterQuery = {};
 
   // Extraction filters
-  var filters = Session.get('filters');
+  var filters = Session.get(organ+'-filters');
   for (var filterName in filters){
     if (filters[filterName] !== null){
       filterQuery[filterName] = filters[filterName];
@@ -106,7 +110,7 @@ export default withTracker(() => {
     }
     return searches;
   };
-  var searchBar = Session.get('searchBar');
+  var searchBar = Session.get(organ+'-searchBar');
   if (searchBar['op'] === "AND"){
     filterQuery['$and'] = []
     for (var ind in searchBar['terms']){
@@ -124,32 +128,34 @@ export default withTracker(() => {
   }
 
   // Report limit
-  var reportLimit = parseInt(Session.get('reportLimit'));
+  var reportLimit = parseInt(Session.get(organ+'-reportLimit'));
 
-  const episodesSubscription = Meteor.subscribe('episodes', filterQuery, reportLimit);
-  var reports = Episodes.find({}).fetch();
+  const episodesSubscription = Meteor.subscribe(organ+'-episodes', filterQuery, reportLimit);
+  var reports = db.find({}).fetch();
 
   // Update query number
   if (episodesSubscription.ready()){
     Meteor.call(
-      'episodes.serverQuery', filterQuery,
+      'episodes.serverQuery', organ, filterQuery,
       function(error, result){
         if (error){
           console.log(error);
         }
         if (result != undefined){
-          Session.set('episodes-query', result);
+          Session.set(organ+'-episodes-query', result);
          }
       }
     );
   }
   else{
-    Session.set('episodes-query', "...");
+    Session.set(organ+'-episodes-query', "...");
   }
 
   return {
+    organ: organ,
+    extractions: extractions,
     reports: reports,
-    query: Session.get('episodes-query'),
+    query: Session.get(organ+'-episodes-query'),
     filterQuery: filterQuery,
   };
 })(EpisodesView);

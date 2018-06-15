@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { CSVLink } from 'react-csv';
 
-var extractions = require('/imports/extractions.json');
-
 class BulkExportButton extends Component {
 
   componentWillReceiveProps(nextProps){
     if (JSON.stringify(this.props.info) !== JSON.stringify(nextProps.info)){
-      Session.set('bulkExportData', {'text': "Loading...", 'reports': []});
+      Session.set(props.organ+'-bulkExportData', {'text': "Loading...", 'reports': []});
     }
   }
 
@@ -39,8 +37,8 @@ class BulkExportButton extends Component {
       	var headers = ["EMPI", "EpisodeID", "Report_Date", "Report_Text"];
       }
 
-      for (var category in extractions){
-        for (var label in extractions[category]){
+      for (var category in this.props.extractions){
+        for (var label in this.props.extractions[category]){
           headers.push(label);
         }
       }
@@ -48,7 +46,7 @@ class BulkExportButton extends Component {
 
       const self = this;
       Meteor.call(
-        self.props.db+'.fetchReports', self.props.reportKey, self.props.list,
+        self.props.db+'.fetchReports', self.props.organ, self.props.reportKey, self.props.list,
         function(error, result){
           if (error){
             console.log(error);
@@ -67,7 +65,7 @@ class BulkExportButton extends Component {
 
             // Update button text
             if (self.props.currentText !== "Export in Bulk"){
-              Session.set('bulkExportData', {'text': "Export in Bulk", 'reports': exportData});
+              Session.set(self.props.organ+'-bulkExportData', {'text': "Export in Bulk", 'reports': exportData});
             }
           }
         }
@@ -76,8 +74,8 @@ class BulkExportButton extends Component {
       return (
         <div className="button-section">
           <div className="button-desc"><b>Download multiple reports by a list of key values such as EMPI or ReportID.</b></div>
-          <CSVLink filename={this.props.filename} headers={headers} data={Session.get('bulkExportData')['reports']} target="_self">
-            <p><button className="btn btn-lg btn-info mar">{Session.get('bulkExportData')['text']}</button></p>
+          <CSVLink filename={this.props.filename} headers={headers} data={Session.get(this.props.organ+'-bulkExportData')['reports']} target="_self">
+            <p><button className="btn btn-lg btn-info mar">{Session.get(this.props.organ+'-bulkExportData')['text']}</button></p>
           </CSVLink>
         </div>
       );
@@ -85,17 +83,19 @@ class BulkExportButton extends Component {
   }
 }
 
-export default withTracker(() => {
-  var storedInfo = JSON.parse(localStorage.getItem('bulkExportInfo') || '{"db": "reports", "key": "EMPI"}');
-  var sessionInfo = Session.get('bulkExportInfo') || {'filename': "BulkExport.xlsx", 'list': []};
+export default withTracker((props) => {
+  var storedInfo = JSON.parse(localStorage.getItem(props.organ+'-bulkExportInfo') || '{"db": "reports", "key": "EMPI"}');
+  var sessionInfo = Session.get(props.organ+'-bulkExportInfo') || {'filename': "BulkExport.xlsx", 'list': []};
 
-  Session.set('bulkExportInfo', {'db': storedInfo['db'], 'key': storedInfo['key'], 'filename': sessionInfo['filename'], 'list': sessionInfo['list']});
-  Session.set('bulkExportData', Session.get('bulkExportData') || {'text': "Loading...", 'reports': []});
+  Session.set(props.organ+'-bulkExportInfo', {'db': storedInfo['db'], 'key': storedInfo['key'], 'filename': sessionInfo['filename'], 'list': sessionInfo['list']});
+  Session.set(props.organ+'-bulkExportData', Session.get(props.organ+'-bulkExportData') || {'text': "Loading...", 'reports': []});
 
-  var info = Session.get('bulkExportInfo');
-  var data = Session.get('bulkExportData');
+  var info = Session.get(props.organ+'-bulkExportInfo');
+  var data = Session.get(props.organ+'-bulkExportData');
 
   return({
+    organ: props.organ,
+    extractions: props.extractions,
     info: info,
     db: info['db'],
     reportKey: info['key'],

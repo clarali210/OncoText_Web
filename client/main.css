@@ -30,6 +30,24 @@ h2 {
   color: #FFFFFF;
 }
 
+/***** ALL ORGAN PAGE *****/
+.organ-div {
+  margin: 25px 0px 25px 0px;
+}
+
+.organ-link {
+  font-size: 1.5em;
+  width: 100%;
+}
+
+.organ-link-div {
+  width: 100%;
+  padding: 15px;
+  box-shadow: 0px 0px 5px 2px #BABABA;
+  background-color: #f1f1f1;
+}
+
+
 /***** REPORT LIMIT *****/
 .report-limit {
   left: 0;

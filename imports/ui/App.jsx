@@ -20,7 +20,7 @@ export default class App extends Component {
           <div className="container-fluid">
             <div className="row-fluid">
               <div className="col-md-6 centered">
-                <h1>Pathology Validator</h1>
+                <a href={"/"} style={{width: "100%"}}><h1>Pathology Validator</h1></a>
               </div>
               <div className="col-md-offset-2 col-md-4 centered logos">
                 <img src="/images/mit_logo.svg" height="50px"/>

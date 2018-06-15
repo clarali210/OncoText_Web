@@ -9,7 +9,7 @@ class EpisodesReportList extends Component {
 
   handleCheckAll(){
     var reports = this.props.reports;
-    var checkedReports = Session.get('episodes-checkedReports');
+    var checkedReports = Session.get(this.props.organ+'-episodes-checkedReports');
 
     if (checkedReports.length === reports.length){
       checkedReports = [];
@@ -17,13 +17,13 @@ class EpisodesReportList extends Component {
       checkedReports = this.props.displayedIDs;
     }
 
-    Session.set('episodes-checkedReports', checkedReports)
+    Session.set(this.props.organ+'-episodes-checkedReports', checkedReports)
   }
 
   handleCheckReports(newReports) {
     var checkedReports = newReports;
 
-    Session.set('episodes-checkedReports', checkedReports);
+    Session.set(this.props.organ+'-episodes-checkedReports', checkedReports);
   }
 
   render() {
@@ -40,7 +40,7 @@ class EpisodesReportList extends Component {
     return (
       <div className="list-container">
         <div className="check-all">
-          <input id={"check-all-"+this.props.name} type="checkbox" checked={Session.get('checkAll')}
+          <input id={"check-all-"+this.props.name} type="checkbox" checked={Session.get(this.props.organ+'-checkAll')}
           onChange={() => this.handleCheckAll()}/>
           <label className="check checkbox-label-all" htmlFor={"check-all-"+this.props.name}> All</label>
         </div>
@@ -58,8 +58,8 @@ class EpisodesReportList extends Component {
 
 export default withTracker((props) => {
   // Initiate session variables
-  Session.set('episodes-checkedReports', Session.get('episodes-checkedReports') || []);
-  Session.set('episodes-checkAll', false);
+  Session.set(props.organ+'-episodes-checkedReports', Session.get(props.organ+'-episodes-checkedReports') || []);
+  Session.set(props.organ+'-episodes-checkAll', false);
 
   var reports = props.reports;
 
@@ -69,12 +69,12 @@ export default withTracker((props) => {
     displayedIDs.push(report['ReportID']);
   })
 
-  var currentChecked = Session.get('episodes-checkedReports');
+  var currentChecked = Session.get(props.organ+'-episodes-checkedReports');
   currentChecked = currentChecked.filter((ID) => displayedIDs.includes(ID));
-  Session.set('episodes-checkedReports', currentChecked);
+  Session.set(props.organ+'-episodes-checkedReports', currentChecked);
 
   // Set checkAll value
-  var checkAll = Session.get('episodes-checkAll');
+  var checkAll = Session.get(props.organ+'-episodes-checkAll');
   checkAll = true;
   if (displayedIDs.length === 0) {
     checkAll = false;
@@ -85,15 +85,16 @@ export default withTracker((props) => {
       }
     }
   }
-  Session.set('episodes-checkAll', checkAll);
+  Session.set(props.organ+'-episodes-checkAll', checkAll);
 
   return({
+    organ: props.organ,
     name: props.name,
     reports: props.reports,
     displayedIDs: displayedIDs,
     containerTitle: "Episodes of Care",
     checkedReports: currentChecked,
     checkAll: checkAll,
-    loading: Session.get('episodes-query') === "...",
+    loading: Session.get(props.organ+'-episodes-query') === "...",
   });
 })(EpisodesReportList);

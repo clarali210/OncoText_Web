@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { CSVLink } from 'react-csv';
 
-var extractions = require('/imports/extractions.json');
-
 class ExportButton extends Component {
 
   componentWillReceiveProps(nextProps){
     if (JSON.stringify(this.props.checkedReports) !== JSON.stringify(nextProps.checkedReports)){
-      Session.set('exportText', {'ReportID': "Loading...", 'EMPI': 'Loading...'});
-      Session.set('exportData', {'ReportID': [], "EMPI": []});
+      Session.set(this.props.organ+'-exportText', {'ReportID': "Loading...", 'EMPI': 'Loading...'});
+      Session.set(this.props.organ+'-exportData', {'ReportID': [], "EMPI": []});
     }
   }
 
@@ -36,8 +34,8 @@ class ExportButton extends Component {
       var exportData = [];
 
       var headers = ["EMPI", "Report_Date", "Report_Text"];
-      for (var category in extractions){
-        for (var label in extractions[category]){
+      for (var category in this.props.extractions){
+        for (var label in this.props.extractions[category]){
           headers.push(label);
         }
       }
@@ -45,7 +43,7 @@ class ExportButton extends Component {
 
       const self = this;
       Meteor.call(
-        'reports.exportChecked', self.props.exportKey, checkedReports,
+        'reports.exportChecked', self.props.organ, self.props.exportKey, checkedReports,
         function(error, result){
           if (error){
             console.log(error);
@@ -67,11 +65,11 @@ class ExportButton extends Component {
             if (self.props.currentText[self.props.exportKey] !== self.props.exportText){
               var newText = self.props.currentText;
               newText[self.props.exportKey] = self.props.exportText;
-              Session.set('exportText', newText);
+              Session.set(self.props.organ+'-exportText', newText);
 
               var exports = self.props.exportData;
               exports[self.props.exportKey] = exportData;
-              Session.set('exportData', exports);
+              Session.set(self.props.organ+'-exportData', exports);
 
               console.log('ready');
             }
@@ -82,8 +80,8 @@ class ExportButton extends Component {
       return (
         <div className={"button-section export-"+this.props.exportKey}>
           <div className="button-desc"><b>{this.props.description}</b></div>
-          <CSVLink filename={this.props.filename} headers={headers} data={Session.get('exportData')[this.props.exportKey]} target="_self">
-            <p><button className="btn btn-lg btn-info mar">{Session.get('exportText')[this.props.exportKey]}</button></p>
+          <CSVLink filename={this.props.filename} headers={headers} data={Session.get(this.props.organ+'-exportData')[this.props.exportKey]} target="_self">
+            <p><button className="btn btn-lg btn-info mar">{Session.get(this.props.organ+'-exportText')[this.props.exportKey]}</button></p>
           </CSVLink>
         </div>
       );
@@ -92,15 +90,17 @@ class ExportButton extends Component {
 }
 
 export default withTracker((props) => {
-  Session.set('exportText', Session.get('exportText') || {'ReportID': "Loading...", 'EMPI': 'Loading...'});
-  Session.set('exportData', Session.get('exportData') || {'ReportID': [], "EMPI": []});
+  Session.set(props.organ+'-exportText', Session.get(props.organ+'-exportText') || {'ReportID': "Loading...", 'EMPI': 'Loading...'});
+  Session.set(props.organ+'-exportData', Session.get(props.organ+'-exportData') || {'ReportID': [], "EMPI": []});
 
   return({
+    organ: props.organ,
+    extractions: props.extractions,
     exportKey: props.exportKey,
     exportText: props.exportText,
-    currentText: Session.get('exportText'),
-    exportData: Session.get('exportData'),
-    checkedReports: Session.get('checkedReports') || {unvalidated: [], validated: []},
+    currentText: Session.get(props.organ+'-exportText'),
+    exportData: Session.get(props.organ+'-exportData'),
+    checkedReports: Session.get(props.organ+'-checkedReports') || {unvalidated: [], validated: []},
     description: props.desc,
     filename: props.filename,
   })

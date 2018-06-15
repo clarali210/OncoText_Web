@@ -6,10 +6,6 @@ import DisplayExtractionsList from './sub-components/DisplayExtractionsList.jsx'
 import ReportText from './sub-components/ReportText.jsx';
 import Extractions from './sub-components/Extractions.jsx';
 
-import { Reports } from '../api/reports.js';
-
-var extractions = require('/imports/extractions.json');
-
 class OneReportView extends Component {
 
   constructor(props){
@@ -29,26 +25,26 @@ class OneReportView extends Component {
             </div>
             <div className="col-md-1"></div>
             <div className="col-md-1">
-              <a href={FlowRouter.path('/')} className="btn btn-lg btn-info back-button" role="button">Back to Home</a>
+              <a href={FlowRouter.path('/')+this.props.organ} className="btn btn-lg btn-info back-button" role="button">Back to Reports</a>
             </div>
           </div>
           <div className="col-md-12 row centered">
-            <ValidateDisplayedButton currentReport={this.props.currentReport} extractionLabels={this.props.extractionLabels}/>
+            <ValidateDisplayedButton organ={this.props.organ} extractions={this.props.extractions} currentReport={this.props.currentReport} extractionLabels={this.props.extractionLabels}/>
           </div>
           <div className="col-md-12 row centered">
             <div className="col-md-2 centered">
-              <DisplayExtractionsList extractionLabels={this.props.extractionLabels}/>
+              <DisplayExtractionsList organ={this.props.organ} extractions={this.props.extractions} extractionLabels={this.props.extractionLabels}/>
             </div>
             <div className="col-md-6 centered">
               <div className="list-container">
                 <div className="list-container-title">Report Text</div>
-                <ReportText currentReport={this.props.currentReport}/>
+                <ReportText organ={this.props.organ} currentReport={this.props.currentReport}/>
               </div>
             </div>
             <div className="col-md-4 centered">
               <div className="list-container">
                 <div className="list-container-title">Extractions</div>
-                <Extractions currentReport={this.props.currentReport}/>
+                <Extractions organ={this.props.organ} extractions={this.props.extractions} currentReport={this.props.currentReport}/>
               </div>
             </div>
           </div>
@@ -61,12 +57,15 @@ class OneReportView extends Component {
   }
 }
 
-export default withTracker(() => {
+export default withTracker((props) => {
+  const db = props.db;
+  const organ = props.organ;
+  const extractions = props.extractions;
   const currentId = FlowRouter.getParam('_id');
   const oid = new Meteor.Collection.ObjectID(currentId);
-  Meteor.subscribe('reports', {'_id': oid}, 1);
+  Meteor.subscribe(organ+'-reports', {'_id': oid}, 1);
 
-  var currentReport = Reports.find({}).fetch()[0];
+  var currentReport = db.find({}).fetch()[0];
 
   var extractionLabels = []
   for (var category in extractions){
@@ -74,8 +73,10 @@ export default withTracker(() => {
   }
 
   return{
+    organ: organ,
+    extractions: extractions,
     currentReport: currentReport,
-    remainingCount: localStorage.getItem('query'),
+    remainingCount: localStorage.getItem(organ+'-query'),
     extractionLabels: extractionLabels
   };
 })(OneReportView);

@@ -1,21 +1,29 @@
 import React, { Component } from 'react';
+import { withTracker } from 'meteor/react-meteor-data';
 
-export default class ReportLimit extends Component {
+class ReportLimit extends Component {
 
   handleChangeReportLimit(e){
-    Session.set('reportLimit', e.target.value);
-    localStorage.setItem('reportLimit', e.target.value);
+    Session.set(this.props.organ+'-reportLimit', e.target.value);
+    localStorage.setItem(this.props.organ+'-reportLimit', e.target.value);
 
-    Session.set('checkedReports', {unvalidated: [], validated: []});
-    Session.set('episodes-checkedReports', []);
+    Session.set(this.props.organ+'-checkedReports', {unvalidated: [], validated: []});
+    Session.set(this.props.organ+'-episodes-checkedReports', []);
   }
 
   render() {
     return (
       <div>
-        Report Limit: <input type="text" value={Session.get('reportLimit')} style={{width: 100}}
+        Report Limit: <input type="text" value={this.props.val} style={{width: 100}}
         onChange={(e) => this.handleChangeReportLimit(e)}/>
       </div>
     );
   }
 }
+
+export default withTracker((props) => {
+  return {
+    organ: props.organ,
+    val: Session.get(props.organ+'-reportLimit'),
+  };
+})(ReportLimit);

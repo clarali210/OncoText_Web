@@ -9,7 +9,7 @@ class ReportList extends Component {
 
   handleCheckAll(){
     var reports = this.props.reports[this.props.name];
-    var checkedReports = Session.get('checkedReports');
+    var checkedReports = Session.get(this.props.organ+'-checkedReports');
 
     if (checkedReports[this.props.name].length === reports.length){
       checkedReports[this.props.name] = [];
@@ -17,14 +17,14 @@ class ReportList extends Component {
       checkedReports[this.props.name] = this.props.displayedIDs;
     }
 
-    Session.set('checkedReports', checkedReports)
+    Session.set(this.props.organ+'-checkedReports', checkedReports)
   }
 
   handleCheckReports(newReports) {
-    var checkedReports = Session.get('checkedReports');
+    var checkedReports = Session.get(this.props.organ+'-checkedReports');
     checkedReports[this.props.name] = newReports;
 
-    Session.set('checkedReports', checkedReports);
+    Session.set(this.props.organ+'-checkedReports', checkedReports);
   }
 
   render() {
@@ -34,14 +34,14 @@ class ReportList extends Component {
     } else {
       var reports = this.props.reports[this.props.name];
       for (var ind in reports){
-        rows.push(<ReportItem report={reports[ind]} key={reports[ind]._id}/>);
+        rows.push(<ReportItem organ={this.props.organ} report={reports[ind]} key={reports[ind]._id}/>);
       }
     }
 
     return (
       <div className="list-container">
         <div className="check-all">
-          <input id={"check-all-"+this.props.name} type="checkbox" checked={Session.get('checkAll')[this.props.name]}
+          <input id={"check-all-"+this.props.name} type="checkbox" checked={Session.get(this.props.organ+'-checkAll')[this.props.name]}
           onChange={() => this.handleCheckAll()}/>
           <label className="check checkbox-label-all" htmlFor={"check-all-"+this.props.name}> All</label>
         </div>
@@ -59,8 +59,8 @@ class ReportList extends Component {
 
 export default withTracker((props) => {
   // Initiate session variables
-  Session.set('checkedReports', Session.get('checkedReports') || {unvalidated: [], validated: []});
-  Session.set('checkAll', {unvalidated: false, validated: false});
+  Session.set(props.organ+'-checkedReports', Session.get(props.organ+'-checkedReports') || {unvalidated: [], validated: []});
+  Session.set(props.organ+'-checkAll', {unvalidated: false, validated: false});
 
   if (props.name === "unvalidated"){
     var containerTitle = "Remaining";
@@ -76,12 +76,12 @@ export default withTracker((props) => {
     displayedIDs.push(report['ReportID']);
   })
 
-  var currentChecked = Session.get('checkedReports');
+  var currentChecked = Session.get(props.organ+'-checkedReports');
   currentChecked[props.name] = currentChecked[props.name].filter((ID) => displayedIDs.includes(ID));
-  Session.set('checkedReports', currentChecked);
+  Session.set(props.organ+'-checkedReports', currentChecked);
 
   // Set checkAll value
-  var checkAll = Session.get('checkAll');
+  var checkAll = Session.get(props.organ+'-checkAll');
   checkAll[props.name] = true;
   if (displayedIDs.length === 0) {
     checkAll[props.name] = false;
@@ -92,15 +92,16 @@ export default withTracker((props) => {
       }
     }
   }
-  Session.set('checkAll', checkAll);
+  Session.set(props.organ+'-checkAll', checkAll);
 
   return({
+    organ: props.organ,
     name: props.name,
     reports: props.reports,
     displayedIDs: displayedIDs,
     containerTitle: containerTitle,
     checkedReports: currentChecked,
     checkAll: checkAll,
-    loading: Session.get('query') === "...",
+    loading: Session.get(props.organ+'-query') === "...",
   });
 })(ReportList);

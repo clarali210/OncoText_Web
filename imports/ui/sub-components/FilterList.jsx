@@ -3,34 +3,32 @@ import { withTracker } from 'meteor/react-meteor-data';
 
 import FilterItem from './FilterItem.jsx';
 
-var extractions = require('/imports/extractions.json');
-
 class FilterList extends Component {
 
   handleToggleCategories(category){
-    var filterCategories = Session.get('filterCategories');
+    var filterCategories = Session.get(this.props.organ+'-filterCategories');
     filterCategories[category] = !filterCategories[category];
 
-    Session.set('filterCategories', filterCategories);
-    localStorage.setItem('filterCategories', JSON.stringify(Session.get('filterCategories')));
+    Session.set(this.props.organ+'-filterCategories', filterCategories);
+    localStorage.setItem(this.props.organ+'-filterCategories', JSON.stringify(Session.get(this.props.organ+'-filterCategories')));
   }
 
   handleClearAllFilters(){
     var filters = {};
-    for (var category in extractions){
-      for (var filterName in extractions[category]){
+    for (var category in this.props.extractions){
+      for (var filterName in this.props.extractions[category]){
         filters[filterName] = null;
       }
     }
-    Session.set('filters', filters);
-    localStorage.removeItem('filters');
+    Session.set(this.props.organ+'-filters', filters);
+    localStorage.removeItem(this.props.organ+'-filters');
   }
 
   render() {
     var filterList = [];
 
     // If the dropdown category is opened, display corresponding filters
-    for (var category in extractions) {
+    for (var category in this.props.extractions) {
       const categoryName = category;
 
       if (this.props.filterCategories[category]){
@@ -40,12 +38,12 @@ class FilterList extends Component {
           </div>
         );
 
-        for (var filterName in extractions[category]){
-          var filterItem = [filterName, extractions[category][filterName]];
+        for (var filterName in this.props.extractions[category]){
+          var filterItem = [filterName, this.props.extractions[category][filterName]];
 
           filterList.push(
             <div key={filterName+"-div"}>
-              <FilterItem extraction={filterItem}/>
+              <FilterItem organ={this.props.organ} extraction={filterItem}/>
             </div>
           );
         }
@@ -70,17 +68,19 @@ class FilterList extends Component {
   }
 }
 
-export default withTracker(() => {
+export default withTracker((props) => {
   // Initialize category toggler
-  var filterCategories = JSON.parse(localStorage.getItem('filterCategories') || '{}');
+  var filterCategories = JSON.parse(localStorage.getItem(props.organ+'-filterCategories') || '{}');
   if (Object.keys(filterCategories).length === 0){
-    for (var category in extractions){
+    for (var category in props.extractions){
       filterCategories[category] = false;
     }
   }
-  Session.set('filterCategories', filterCategories);
+  Session.set(props.organ+'-filterCategories', filterCategories);
 
   return({
-    filterCategories: Session.get('filterCategories')
+    organ: props.organ,
+    extractions: props.extractions,
+    filterCategories: Session.get(props.organ+'-filterCategories')
   });
 })(FilterList);
