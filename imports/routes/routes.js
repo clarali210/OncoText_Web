@@ -18,6 +18,7 @@ FlowRouterAutoscroll.animationDuration = 500;
 FlowRouter.route('/', {
   name: 'Main',
   action() {
+    localStorage.clear();
     mount(App, {
       content: <AllOrgansView/>,
     });

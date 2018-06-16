@@ -6,7 +6,7 @@ export default class AllOrgansView extends Component {
 
   renderOrgans(){
     var rows = [];
-    for (organ in extractions){
+    for (const organ in extractions){
       rows.push(
         <div className="col-md-4 centered organ-div" key={organ+'-div'}>
           <a href={'/'+organ} className='organ-link'>
