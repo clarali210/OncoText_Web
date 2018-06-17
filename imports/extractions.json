@@ -123,6 +123,7 @@
       "PathologyType": ["Anatomic", "Cytology", "Autopsy"],
       "BiopsyType": ["Core", "Excision", "Other", "9"],
       "SegmentType": ["Header", "Diagnosis", "Description"],
+      "SegmentID": [],
       "train": ["0", "1"]
     }
   }

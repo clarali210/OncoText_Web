@@ -7,7 +7,7 @@ class BulkExportButton extends Component {
 
   componentWillReceiveProps(nextProps){
     if (JSON.stringify(this.props.info) !== JSON.stringify(nextProps.info)){
-      Session.set(props.organ+'-bulkExportData', {'text': "Loading...", 'reports': []});
+      Session.set(this.props.organ+'-bulkExportData', {'text': "Loading...", 'reports': []});
     }
   }
 
