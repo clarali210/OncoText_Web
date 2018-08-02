@@ -43,10 +43,6 @@ if (Meteor.isServer) {
     },
 
     'reports.fetchReports'(organ, key, keyValues){
-      // var reports = [];
-      // for (var ind in keyValues){
-      //   reports = reports.concat(Reports[organ].find({[key]: keyValues[ind]}).fetch());
-      // }
       var reports = Reports[organ].find({[key]: { $in: keyValues}}).fetch();
       reports = reports.filter((n) => { return n != undefined });
       return reports;

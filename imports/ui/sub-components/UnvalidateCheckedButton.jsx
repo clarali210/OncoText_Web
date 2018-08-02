@@ -4,11 +4,11 @@ import { withTracker } from 'meteor/react-meteor-data';
 class UnvalidateCheckedButton extends Component {
 
   handleUnvalidate(){
-    Meteor.call('reports.unvalidateChecked', this.props.organ, this.props.checkedValidated);
+    Meteor.call('reports.unvalidateChecked', this.props.organ, this.props.reports);
   }
 
   handleClick(){
-    if (this.props.checkedValidated !== null && this.props.checkedValidated.length !== 0){
+    if (this.props.reports !== null && this.props.reports.length !== 0){
       this.handleUnvalidate();
     } else {
       alert("No reports selected!");
@@ -28,6 +28,6 @@ class UnvalidateCheckedButton extends Component {
 export default withTracker((props) => {
   return({
     organ: props.organ,
-    checkedValidated: Session.get(props.organ+'-checkedReports')['validated']
+    reports: props.validatedReports,
   });
 })(UnvalidateCheckedButton);
