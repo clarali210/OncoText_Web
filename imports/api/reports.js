@@ -20,7 +20,7 @@ for (const organ in extractions){
 }
 
 if (Meteor.isServer) {
-  
+
   Meteor.methods({
     'reports.serverQuery'(organ, query){
       numReps = Reports[organ].find(query).count();
@@ -43,10 +43,11 @@ if (Meteor.isServer) {
     },
 
     'reports.fetchReports'(organ, key, keyValues){
-      var reports = [];
-      for (var ind in keyValues){
-        reports = reports.concat(Reports[organ].find({[key]: keyValues[ind]}).fetch());
-      }
+      // var reports = [];
+      // for (var ind in keyValues){
+      //   reports = reports.concat(Reports[organ].find({[key]: keyValues[ind]}).fetch());
+      // }
+      var reports = Reports[organ].find({[key]: { $in: keyValues}).fetch()
       reports = reports.filter((n) => { return n != undefined });
       return reports;
     }
