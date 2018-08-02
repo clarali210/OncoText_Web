@@ -44,6 +44,7 @@ Meteor.methods({
 
   // For each report with at least one validated label, add it to Annotations collection
   'reports.submitAndRemoveValidated'(organ) {
+    const organ_extractions = extractions[organ];
     var reports = Reports[organ].find({ $where: "this.validatedLabels.length > 0" }).fetch();
     reports.forEach(
       function(report){
