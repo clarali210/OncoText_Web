@@ -24,7 +24,7 @@ class EpisodesExportButton extends Component {
       Session.set(this.props.organ+'-exportText', newText);
 
       var exports = this.props.exportData;
-      exports[this.props.exportKey] = exportData;
+      exports[this.props.exportKey] = this.props.reports;
       Session.set(this.props.organ+'-exportData', exports);
     }
     else {
