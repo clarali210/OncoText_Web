@@ -37,18 +37,10 @@ export default withTracker((props) => {
     var containerTitle = "Validated";
   }
 
-  var reports = props.reports[props.name];
-
-  var displayedIDs = [];
-  reports.forEach((report) => {
-    displayedIDs.push(report['ReportID']);
-  })
-
   return({
     organ: props.organ,
     name: props.name,
     reports: props.reports,
-    displayedIDs: displayedIDs,
     containerTitle: containerTitle,
     loading: Session.get(props.organ+'-query') === "...",
   });

@@ -53,12 +53,16 @@ class AllReportsView extends Component {
             <FilterList organ={this.props.organ} extractions={this.props.extractions}/>
           </div>
           <div className="col-md-5 centered">
-            <ExportButton organ={this.props.organ} extractions={allExtractions} reports={this.props.reports} exportKey="ReportID" exportText="Export Selected" desc="This exports the set of single path reports selected below." filename={this.queryToFilename()+".csv"}/>
-            <ExportButton organ={this.props.organ} extractions={allExtractions} reports={this.props.reports} exportKey="EMPI" exportText="Export All Reports" desc="This exports ALL path reports associated with the patients selected." filename={this.queryToFilename()+"_All.csv"}/>
+            <ExportButton organ={this.props.organ} extractions={allExtractions} reports={this.props.reports}
+            exportKey="ReportID" exportText="Export Displayed" desc="This exports the set of single path reports displayed below."
+            filename={this.queryToFilename()+".csv"}/>
+            <ExportButton organ={this.props.organ} extractions={allExtractions} reports={this.props.reports}
+            exportKey="EMPI" exportText="Export All Reports" desc="This exports ALL path reports associated with the patients selected."
+            filename={this.queryToFilename()+"_All.csv"}/>
             <ReportList organ={this.props.organ} name="unvalidated" reports={this.props.reports}/>
           </div>
           <div className="col-md-5 centered">
-            <UnvalidateCheckedButton organ={this.props.organ} validatedReports={this.props.reports['validated']}/>
+            <UnvalidateDisplayedButton organ={this.props.organ} validatedReports={this.props.reports['validated']}/>
             <SubmitValidatedButton organ={this.props.organ} validatedReports={this.props.reports['validated']}/>
             <ReportList organ={this.props.organ} name="validated" reports={this.props.reports}/>
           </div>

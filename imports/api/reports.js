@@ -27,21 +27,6 @@ if (Meteor.isServer) {
       return numReps;
     },
 
-    'reports.exportChecked'(organ, key, checkedReports){
-      if (key == "ReportID"){
-        var checkedKeyValues = checkedReports;
-      } else {
-        var checkedKeyValues = [];
-        for (var ind in checkedReports){
-          var report = Reports[organ].find({ReportID: checkedReports[ind]}).fetch()[0];
-          if ((report !== undefined) && (!checkedKeyValues.includes(report[key]))){
-            checkedKeyValues.push(report[key]);
-          }
-        }
-      }
-      return Meteor.call('reports.fetchReports', organ, key, checkedKeyValues);
-    },
-
     'reports.fetchReports'(organ, key, keyValues){
       var reports = Reports[organ].find({[key]: { $in: keyValues}}).fetch();
       reports = reports.filter((n) => { return n != undefined });
@@ -55,13 +40,6 @@ Meteor.methods({
     Reports[organ].update(id, {
       $set: updateObj
     });
-  },
-
-  'reports.unvalidateChecked'(organ, checkedReports){
-    for (var ind in checkedReports){
-      var report = Reports[organ].find({'ReportID': checkedReports[ind]}).fetch()[0];
-      Meteor.call('reports.updateReport', organ, report['_id'], {validatedLabels: []});
-    }
   },
 
   // For each report with at least one validated label, add it to Annotations collection
