@@ -12,6 +12,8 @@ import UnvalidateCheckedButton from './sub-components/UnvalidateCheckedButton.js
 import SubmitValidatedButton from './sub-components/SubmitValidatedButton.jsx';
 import ReportList from './sub-components/ReportList.jsx';
 
+var allExtractions = require("/imports/extractions.json")['All']
+
 class AllReportsView extends Component {
 
   constructor(props) {
@@ -51,8 +53,8 @@ class AllReportsView extends Component {
             <FilterList organ={this.props.organ} extractions={this.props.extractions}/>
           </div>
           <div className="col-md-5 centered">
-            <ExportButton organ={this.props.organ} extractions={this.props.extractions} exportKey="ReportID" exportText="Export Selected" desc="This exports the set of single path reports selected below." filename={this.queryToFilename()+".csv"}/>
-            <ExportButton organ={this.props.organ} extractions={this.props.extractions} exportKey="EMPI" exportText="Export All Reports" desc="This exports ALL path reports associated with the patients selected." filename={this.queryToFilename()+"_All.csv"}/>
+            <ExportButton organ={this.props.organ} extractions={allExtractions} exportKey="ReportID" exportText="Export Selected" desc="This exports the set of single path reports selected below." filename={this.queryToFilename()+".csv"}/>
+            <ExportButton organ={this.props.organ} extractions={allExtractions} exportKey="EMPI" exportText="Export All Reports" desc="This exports ALL path reports associated with the patients selected." filename={this.queryToFilename()+"_All.csv"}/>
             <ReportList organ={this.props.organ} name="unvalidated" reports={this.props.reports}/>
           </div>
           <div className="col-md-5 centered">

@@ -18,7 +18,6 @@ FlowRouterAutoscroll.animationDuration = 500;
 FlowRouter.route('/', {
   name: 'Main',
   action() {
-    localStorage.clear();
     mount(App, {
       content: <AllOrgansView/>,
     });
@@ -26,35 +25,37 @@ FlowRouter.route('/', {
 });
 
 for (const organ in extractions){
-  const db = Reports[organ];
-  const organ_extractions = extractions[organ];
+  if (organ != "All"){
+      const db = Reports[organ];
+      const organ_extractions = extractions[organ];
 
-  FlowRouter.route('/'+organ, {
-    name: organ,
-    action(params, queryParams) {
-      mount(App, {
-        content: <AllReportsView db={db} organ={organ} extractions={organ_extractions}/>,
+      FlowRouter.route('/'+organ, {
+	  name: organ,
+	  action(params, queryParams) {
+	      mount(App, {
+		  content: <AllReportsView db={db} organ={organ} extractions={organ_extractions}/>,
+	      });
+	  },
       });
-    },
-  });
 
-  FlowRouter.route('/'+organ+'/reports/:_id', {
-    name: organ+'Reports.show',
-    action(params, queryParams) {
-      mount(App, {
-        content: <OneReportView db={db} organ={organ} extractions={organ_extractions}/>,
+      FlowRouter.route('/'+organ+'/reports/:_id', {
+	  name: organ+'Reports.show',
+	  action(params, queryParams) {
+	      mount(App, {
+		  content: <OneReportView db={db} organ={organ} extractions={organ_extractions}/>,
+	      });
+	  },
       });
-    },
-  });
 
-  const episodesdb = Episodes[organ];
+      const episodesdb = Episodes[organ];
 
-  FlowRouter.route('/'+organ+'/episodes', {
-    name: organ+'Episodes',
-    action() {
-      mount(App, {
-        content: <EpisodesView db={episodesdb} organ={organ} extractions={organ_extractions}/>,
+      FlowRouter.route('/'+organ+'/episodes', {
+	  name: organ+'Episodes',
+	  action() {
+	      mount(App, {
+		  content: <EpisodesView db={episodesdb} organ={organ} extractions={organ_extractions}/>,
+	      });
+	  },
       });
-    },
-  });
+   }
 }
