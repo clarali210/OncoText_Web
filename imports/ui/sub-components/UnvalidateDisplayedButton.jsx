@@ -5,7 +5,7 @@ class UnvalidateDisplayedButton extends Component {
 
   handleUnvalidate(){
     this.props.reports.forEach((report) => {
-      Meteor.call('reports.updateReport', organ, report['_id'], {validatedLabels: []});
+      Meteor.call('reports.updateReport', this.props.organ, report['_id'], {validatedLabels: []});
     })
   }
 
