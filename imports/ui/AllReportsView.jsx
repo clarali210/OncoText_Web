@@ -8,7 +8,7 @@ import ReportLimit from './sub-components/ReportLimit.jsx';
 import SearchBar from './sub-components/SearchBar.jsx';
 import FilterList from './sub-components/FilterList.jsx';
 import ExportButton from './sub-components/ExportButton.jsx';
-import UnvalidateCheckedButton from './sub-components/UnvalidateCheckedButton.jsx';
+import UnvalidateCheckedButton from './sub-components/UnvalidateDisplayedButton.jsx';
 import SubmitValidatedButton from './sub-components/SubmitValidatedButton.jsx';
 import ReportList from './sub-components/ReportList.jsx';
 
