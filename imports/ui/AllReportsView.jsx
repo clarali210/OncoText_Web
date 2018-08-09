@@ -37,20 +37,20 @@ class AllReportsView extends Component {
 
         <div className="col-md-12 view-bar row row-same-height centered">
           <div className="report-limit">
-            <ReportLimit organ={this.props.organ}/>
+            <ReportLimit organ={this.props.organ} subs={this.props.subs}/>
           </div>
           <div className="view-bar-title">
             <h2>Viewing {this.props.organ}</h2>
             <div id="num_report"><i>{this.props.query} matching query</i></div>
           </div>
           <div className="search">
-            <SearchBar organ={this.props.organ}/>
+            <SearchBar organ={this.props.organ} subs={this.props.subs}/>
           </div>
         </div>
 
         <div className="col-md-12 centered">
           <div className="col-md-2 centered">
-            <FilterList organ={this.props.organ} extractions={this.props.extractions}/>
+            <FilterList organ={this.props.organ} extractions={this.props.extractions} subs={this.props.subs}/>
           </div>
           <div className="col-md-5 centered">
             <ExportButton organ={this.props.organ} extractions={allExtractions} reports={this.props.reports}
@@ -180,5 +180,6 @@ export default withTracker((props) => {
     },
     query: Session.get(organ+'-query'),
     filterQuery: filterQuery,
+    subs: reportSubscription,
   };
 })(AllReportsView);

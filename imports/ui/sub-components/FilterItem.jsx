@@ -15,6 +15,7 @@ class FilterItem extends Component {
 
     Session.set(this.props.organ+'-checkedReports', {unvalidated: [], validated: []});
     Session.set(this.props.organ+'-episodes-checkedReports', []);
+    this.props.subs.stopNow();
   }
 
   handleClearFilter(filterName){
@@ -26,6 +27,7 @@ class FilterItem extends Component {
 
     Session.set(this.props.organ+'-checkedReports', {unvalidated: [], validated: []});
     Session.set(this.props.organ+'-episodes-checkedReports', []);
+    this.props.subs.stopNow();
   }
 
   render() {
@@ -72,5 +74,6 @@ export default withTracker((props) => {
     organ: props.organ,
     extraction: props.extraction,
     filters: Session.get(props.organ+'-filters'),
+    subs: props.subs,
   });
 })(FilterItem);

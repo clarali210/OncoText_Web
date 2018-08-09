@@ -22,6 +22,7 @@ class FilterList extends Component {
     }
     Session.set(this.props.organ+'-filters', filters);
     localStorage.removeItem(this.props.organ+'-filters');
+    this.props.subs.stopNow();
   }
 
   render() {
@@ -43,7 +44,7 @@ class FilterList extends Component {
 
           filterList.push(
             <div key={filterName+"-div"}>
-              <FilterItem organ={this.props.organ} extraction={filterItem}/>
+              <FilterItem organ={this.props.organ} extraction={filterItem} subs={this.props.subs}/>
             </div>
           );
         }
@@ -82,5 +83,6 @@ export default withTracker((props) => {
     organ: props.organ,
     extractions: props.extractions,
     filterCategories: Session.get(props.organ+'-filterCategories'),
+    subs: props.subs,
   });
 })(FilterList);

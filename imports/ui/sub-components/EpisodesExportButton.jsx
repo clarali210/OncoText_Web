@@ -71,6 +71,14 @@ class EpisodesExportButton extends Component {
       );
     }
 
+    var headers = ["EMPI", "EpisodeID", "Episode_Start_Date", "Episode_Last_Date"];
+    for (var category in this.props.extractions){
+      for (var label in this.props.extractions[category]){
+        headers.push(label);
+      }
+    }
+    headers = headers.concat(["Report_Date_Time", "filename", "batchID", "train", "Institution", "MRN", "ReportID"])
+
     return (
       <div className={"button-section export-"+this.props.exportKey}>
         <div className="button-desc"><b>{this.props.description}</b></div>

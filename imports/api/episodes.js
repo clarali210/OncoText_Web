@@ -26,7 +26,7 @@ if (Meteor.isServer) {
     },
 
     'episodes.fetchReports'(organ, key, keyValues){
-      var reports = Reports[organ].find({[key]: { $in: keyValues}}).fetch();
+      var reports = Episodes[organ].find({[key]: { $in: keyValues}}).fetch();
       reports = reports.filter((n) => { return n != undefined });
       return reports;
     }

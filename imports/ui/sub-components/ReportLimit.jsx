@@ -9,6 +9,7 @@ class ReportLimit extends Component {
 
     Session.set(this.props.organ+'-checkedReports', {unvalidated: [], validated: []});
     Session.set(this.props.organ+'-episodes-checkedReports', []);
+    this.props.subs.stopNow();
   }
 
   render() {
@@ -25,5 +26,6 @@ export default withTracker((props) => {
   return {
     organ: props.organ,
     val: Session.get(props.organ+'-reportLimit'),
+    subs: props.subs,
   };
 })(ReportLimit);
