@@ -11,6 +11,8 @@ import OneReportView from '/imports/ui/OneReportView.jsx';
 import EpisodesView from '/imports/ui/EpisodesView.jsx';
 
 var extractions = require('/imports/extractions.json');
+const PostSubs = new SubsCache(-1, -1);
+
 import { Reports } from '/imports/api/reports.js';
 import { Episodes } from '/imports/api/episodes.js';
 
@@ -25,7 +27,6 @@ FlowRouter.route('/', {
   },
 });
 
-var PostSubs = SubsCache(-1, -1);
 for (const organ in extractions){
     const db = Reports[organ];
     const organ_extractions = extractions[organ];

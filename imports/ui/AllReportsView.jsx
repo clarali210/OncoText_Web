@@ -151,7 +151,7 @@ export default withTracker((props) => {
     validated: validated_ids
   }));
 
-  console.log(PostSubs.ready(), reportSubscription.ready());
+  console.log(props.PostSubs.ready(), reportSubscription.ready());
   // Update query number
   if (reportSubscription.ready()){
     Meteor.call(

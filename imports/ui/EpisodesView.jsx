@@ -12,7 +12,7 @@ import EpisodesReportList from './sub-components/EpisodesReportList.jsx';
 import BulkExportButton from './sub-components/BulkExportButton.jsx';
 import BulkExport from './sub-components/BulkExport.jsx';
 
-var allExtractions = require("/imports/extractions.json")['All']
+var allExtractions = require("/imports/extractions.json")['All'];
 
 class EpisodesView extends Component {
 
