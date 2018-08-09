@@ -73,7 +73,62 @@
     }
   },
 
-  "OrganProstate": {
+  "OrganProstateCore": {
+    "Cancer": {
+      "ProstateCa": ["0", "1", "9"],
+      "Pr_CaAdeno": ["0", "1", "9"],
+      "Pr_CancerSuspicious": ["0", "1"],
+      "PeriNeuralInvasion": ["0", "1", "9"],
+      "ExtraPr_Ext": ["0", "1"]
+    },
+    "Pre-Cancer": {
+      "Pr_PreCaASAP": ["0", "1"],
+      "Pr_PreCaHiGradePIN": ["0", "1"],
+      "Pr_PreCaLowGradePIN": ["0", "1"],
+      "Pr_PreCaPIA": ["0", "1"]
+    },
+    "Numerical": {
+      "Pr_NumCoresInvolved": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+      "Pr_TotalCoresDone": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+      "Pr_LengthCore": [],
+      "Pr_LengthCore2ndLong": [],
+      "Pr_LengthCore3rdLong": [],
+      "Pr_LengthCoreInvolvedLong": [],
+      "Pr_LengthCoreInvolved2ndLong": [],
+      "Pr_LengthCoreInvolved3rdLong": [],
+      "Pr_PercentCoreInvolvedLong": [],
+      "Pr_PercentCoreInvolved2ndLong": [],
+      "Pr_PercentCoreInvolved3rdLong": []
+    },
+    "Location": {
+      "Pr_Laterality": ["L", "R", "B", "9"],
+      "Pr_Seminal_vesicle": ["0", "1"],
+      "Pr_Urethra": ["0", "1"],
+      "Pr_Apex": ["0", "1"],
+      "Pr_Mid_Apex": ["0", "1"],
+      "Pr_Middle": ["0", "1"],
+      "Pr_Base": ["0", "1"],
+      "Pr_Mid_Base": ["0", "1"],
+      "Pr_Peripheral": ["0", "1"],
+      "Pr_Central": ["0", "1"],
+      "Pr_Transitional": ["0", "1"],
+      "Pr_AntFibromuscular": ["0", "1"],
+      "Pr_Anterior": ["0", "1"],
+      "Pr_Posterior": ["0", "1"],
+      "Pr_Medial": ["0", "1"],
+      "Pr_Lateral": ["0", "1"],
+      "Pr_Section": ["0", "1", "9"]
+    },
+    "ReportData": {
+      "PathologyType": ["Anatomic", "Cytology", "Autopsy"],
+      "BiopsyType": ["Core", "Excision", "Other", "9"],
+      "SegmentType": ["Header", "Diagnosis", "Description"],
+      "SegmentID": [],
+      "train": ["0", "1"]
+    }
+  },
+
+  "OrganProstateNonCore": {
     "Cancer": {
       "ProstateCa": ["0", "1", "9"],
       "Pr_CaAdeno": ["0", "1", "9"],

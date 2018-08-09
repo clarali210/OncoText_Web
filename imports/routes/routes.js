@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { FlowRouterAutoscroll } from 'meteor/tomwasd:flow-router-autoscroll';
+import { SubsCache } from 'meteor/ccorcos:subs-cache';
 import { mount } from 'react-mounter';
 
 import App from '/imports/ui/App.jsx';
@@ -24,38 +25,37 @@ FlowRouter.route('/', {
   },
 });
 
+var PostSubs = SubsCache(-1, -1);
 for (const organ in extractions){
-  if (organ != "All"){
-      const db = Reports[organ];
-      const organ_extractions = extractions[organ];
+    const db = Reports[organ];
+    const organ_extractions = extractions[organ];
 
-      FlowRouter.route('/'+organ, {
-	  name: organ,
-	  action(params, queryParams) {
-	      mount(App, {
-		  content: <AllReportsView db={db} organ={organ} extractions={organ_extractions}/>,
-	      });
-	  },
-      });
+    FlowRouter.route('/'+organ, {
+	name: organ,
+	action(params, queryParams) {
+	    mount(App, {
+		content: <AllReportsView db={db} organ={organ} extractions={organ_extractions} PostSubs={PostSubs}/>,
+	    });
+	},
+    });
 
-      FlowRouter.route('/'+organ+'/reports/:_id', {
-	  name: organ+'Reports.show',
-	  action(params, queryParams) {
-	      mount(App, {
-		  content: <OneReportView db={db} organ={organ} extractions={organ_extractions}/>,
-	      });
-	  },
-      });
+    FlowRouter.route('/'+organ+'/reports/:_id', {
+	name: organ+'Reports.show',
+	action(params, queryParams) {
+	    mount(App, {
+		content: <OneReportView db={db} organ={organ} extractions={organ_extractions} PostSubs={PostSubs}/>,
+	    });
+	},
+    });
 
-      const episodesdb = Episodes[organ];
+    const episodesdb = Episodes[organ];
 
-      FlowRouter.route('/'+organ+'/episodes', {
-	  name: organ+'Episodes',
-	  action() {
-	      mount(App, {
-		  content: <EpisodesView db={episodesdb} organ={organ} extractions={organ_extractions}/>,
-	      });
-	  },
-      });
-   }
+    FlowRouter.route('/'+organ+'/episodes', {
+	name: organ+'Episodes',
+	action() {
+	    mount(App, {
+		content: <EpisodesView db={episodesdb} organ={organ} extractions={organ_extractions}/>,
+	    });
+	},
+    });
 }

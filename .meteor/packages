@@ -22,4 +22,5 @@ react-meteor-data
 mizzao:bootstrap-3
 session@1.1.7
 matdutour:popup-confirm
-underscore
+underscore@1.0.10
+ccorcos:subs-cache

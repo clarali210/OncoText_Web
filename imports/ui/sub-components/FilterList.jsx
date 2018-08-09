@@ -81,6 +81,6 @@ export default withTracker((props) => {
   return({
     organ: props.organ,
     extractions: props.extractions,
-    filterCategories: Session.get(props.organ+'-filterCategories')
+    filterCategories: Session.get(props.organ+'-filterCategories'),
   });
 })(FilterList);

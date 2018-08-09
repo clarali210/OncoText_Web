@@ -12,7 +12,7 @@ import UnvalidateDisplayedButton from './sub-components/UnvalidateDisplayedButto
 import SubmitValidatedButton from './sub-components/SubmitValidatedButton.jsx';
 import ReportList from './sub-components/ReportList.jsx';
 
-var allExtractions = require("/imports/extractions.json")['All']
+var allExtractions = require("/imports/extractions.json")['All'];
 
 class AllReportsView extends Component {
 
@@ -40,7 +40,7 @@ class AllReportsView extends Component {
             <ReportLimit organ={this.props.organ}/>
           </div>
           <div className="view-bar-title">
-            <h2>Viewing All</h2>
+            <h2>Viewing {this.props.organ}</h2>
             <div id="num_report"><i>{this.props.query} matching query</i></div>
           </div>
           <div className="search">
@@ -133,7 +133,7 @@ export default withTracker((props) => {
   // Report limit
   var reportLimit = parseInt(Session.get(organ+'-reportLimit'));
 
-  const reportSubscription = Meteor.subscribe(organ+'-reports', filterQuery, reportLimit);
+  const reportSubscription = props.PostSubs.subscribe(organ+'-reports', filterQuery, reportLimit);
   var unvalidatedReports = db.find({$where: "this.validatedLabels.length === 0"}).fetch();
   var validatedReports = db.find({$where: "this.validatedLabels.length > 0"}).fetch();
 
@@ -151,6 +151,7 @@ export default withTracker((props) => {
     validated: validated_ids
   }));
 
+  console.log(PostSubs.ready(), reportSubscription.ready());
   // Update query number
   if (reportSubscription.ready()){
     Meteor.call(

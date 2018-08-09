@@ -79,7 +79,7 @@ class ExportButton extends Component {
         headers.push(label);
       }
     }
-    headers = headers.concat(["Report_Text_Segmented", "Report_Date_Time", "filename", "batchID", "train", "Institution", "MRN", "ReportID"])
+    headers = headers.concat(["Report_Text_Segmented", "Report_Date_Time", "filename", "batchID", "Institution", "MRN", "ReportID"])
 
     return (
       <div className={"button-section export-"+this.props.exportKey}>

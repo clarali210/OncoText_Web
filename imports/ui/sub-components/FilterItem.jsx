@@ -71,6 +71,6 @@ export default withTracker((props) => {
   return({
     organ: props.organ,
     extraction: props.extraction,
-    filters: Session.get(props.organ+'-filters')
+    filters: Session.get(props.organ+'-filters'),
   });
 })(FilterItem);

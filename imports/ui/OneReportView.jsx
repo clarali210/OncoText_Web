@@ -12,6 +12,10 @@ class OneReportView extends Component {
     super(props);
   }
 
+  componentWillUnmount(){
+    this.props.subs.stopNow();
+  }
+
   render(){
     if (this.props.currentReport){
       return (
@@ -63,7 +67,7 @@ export default withTracker((props) => {
   const extractions = props.extractions;
   const currentId = FlowRouter.getParam('_id');
   const oid = new Meteor.Collection.ObjectID(currentId);
-  Meteor.subscribe(organ+'-reports', {'_id': oid}, 1);
+  const reportSubscription = props.PostSubs.subscribe(organ+'-reports', {'_id': oid}, 1);
 
   var currentReport = db.find({}).fetch()[0];
 
@@ -77,6 +81,7 @@ export default withTracker((props) => {
     extractions: extractions,
     currentReport: currentReport,
     remainingCount: localStorage.getItem(organ+'-query'),
-    extractionLabels: extractionLabels
+    extractionLabels: extractionLabels,
+    subs: reportSubscription,
   };
 })(OneReportView);
