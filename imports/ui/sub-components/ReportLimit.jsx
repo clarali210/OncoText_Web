@@ -9,7 +9,9 @@ class ReportLimit extends Component {
 
     Session.set(this.props.organ+'-checkedReports', {unvalidated: [], validated: []});
     Session.set(this.props.organ+'-episodes-checkedReports', []);
-    this.props.subs.stopNow();
+    if (subs){
+      this.props.subs.stopNow();
+    }
   }
 
   render() {

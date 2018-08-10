@@ -50,13 +50,12 @@ for (const organ in extractions){
     });
 
     const episodesdb = Episodes[organ];
-    const EpPostSubs = new SubsCache(-1, -1);
 
     FlowRouter.route('/'+organ+'/episodes', {
 	name: organ+'Episodes',
 	action() {
 	    mount(App, {
-		content: <EpisodesView db={episodesdb} organ={organ} extractions={organ_extractions} PostSubs={EpPostSubs}/>,
+		content: <EpisodesView db={episodesdb} organ={organ} extractions={organ_extractions}/>,
 	    });
 	},
     });

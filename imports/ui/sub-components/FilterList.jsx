@@ -22,7 +22,9 @@ class FilterList extends Component {
     }
     Session.set(this.props.organ+'-filters', filters);
     localStorage.removeItem(this.props.organ+'-filters');
-    this.props.subs.stopNow();
+    if (subs){
+      this.props.subs.stopNow();
+    }
   }
 
   render() {
