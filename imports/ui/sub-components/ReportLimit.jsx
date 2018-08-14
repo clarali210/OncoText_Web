@@ -7,8 +7,6 @@ class ReportLimit extends Component {
     Session.set(this.props.organ+'-reportLimit', e.target.value);
     localStorage.setItem(this.props.organ+'-reportLimit', e.target.value);
 
-    Session.set(this.props.organ+'-checkedReports', {unvalidated: [], validated: []});
-    Session.set(this.props.organ+'-episodes-checkedReports', []);
     if (this.props.subs){
       this.props.subs.stopNow();
     }
