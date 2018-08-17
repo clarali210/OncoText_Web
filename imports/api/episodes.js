@@ -25,26 +25,8 @@ if (Meteor.isServer) {
       return numReps;
     },
 
-    'episodes.exportChecked'(organ, key, checkedReports){
-      if (key == "ReportID"){
-	      var checkedKeyValues = checkedReports;
-      } else {
-        var checkedKeyValues = [];
-        for (var ind in checkedReports){
-          var report = Episodes[organ].find({ReportID: checkedReports[ind]}).fetch()[0];
-          if ((report !== undefined) && (!checkedKeyValues.includes(report[key]))){
-            checkedKeyValues.push(report[key]);
-          }
-	      }
-      }
-      return Meteor.call('episodes.fetchReports', organ, key, checkedKeyValues);
-    },
-
     'episodes.fetchReports'(organ, key, keyValues){
-      var reports = [];
-      for (var ind in keyValues){
-        reports = reports.concat(Episodes[organ].find({[key]: keyValues[ind]}).fetch());
-      }
+      var reports = Episodes[organ].find({[key]: { $in: keyValues}}).fetch();
       reports = reports.filter((n) => { return n != undefined });
       return reports;
     }

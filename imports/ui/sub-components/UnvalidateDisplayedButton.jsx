@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 
-class UnvalidateCheckedButton extends Component {
+class UnvalidateDisplayedButton extends Component {
 
   handleUnvalidate(){
-    Meteor.call('reports.unvalidateChecked', this.props.organ, this.props.checkedValidated);
+    this.props.reports.forEach((report) => {
+      Meteor.call('reports.updateReport', this.props.organ, report['_id'], {validatedLabels: []});
+    })
   }
 
   handleClick(){
-    if (this.props.checkedValidated !== null && this.props.checkedValidated.length !== 0){
+    if (this.props.reports !== null && this.props.reports.length !== 0){
       this.handleUnvalidate();
     } else {
       alert("No reports selected!");
@@ -18,7 +20,7 @@ class UnvalidateCheckedButton extends Component {
   render(){
     return (
       <div className="button-section unvalidate-button">
-        <div className="button-desc"><b>This unvalidates the selected reports that were previously validated.</b></div>
+        <div className="button-desc"><b>This unvalidates the displayed reports that were previously validated.</b></div>
         <p><button onClick={() => this.handleClick()} className="btn btn-lg btn-info mar">Unvalidate</button></p>
       </div>
     );
@@ -28,6 +30,6 @@ class UnvalidateCheckedButton extends Component {
 export default withTracker((props) => {
   return({
     organ: props.organ,
-    checkedValidated: Session.get(props.organ+'-checkedReports')['validated']
+    reports: props.validatedReports,
   });
-})(UnvalidateCheckedButton);
+})(UnvalidateDisplayedButton);

@@ -43,6 +43,12 @@ class ValidateDisplayedButton extends Component {
   render(){
 
     if (this.props.currentReport['validatedLabels'].length > 0){
+      var validated = "validated";
+    } else {
+      var validated = "unvalidated"
+    }
+
+    if (validated === "validated"){
       var unvalidateButton = (
         <div className="col-md-4">
           <br/>
@@ -84,10 +90,14 @@ class ValidateDisplayedButton extends Component {
 
     return(
       <div className="button-section col-md-12 centered">
-        <div className="col-md-2"></div>
         {validateButton}
+        <div className="col-md-4">
+          <br/>
+          <p><button className="btn btn-lg btn-info mar" onClick={() => this.handleNextReport(validated)}>
+            Skip This Report
+          </button></p>
+        </div>
         {unvalidateButton}
-        <div className="col-md-2"></div>
       </div>
     );
 

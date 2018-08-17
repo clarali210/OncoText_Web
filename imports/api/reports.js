@@ -20,33 +20,15 @@ for (const organ in extractions){
 }
 
 if (Meteor.isServer) {
-  
+
   Meteor.methods({
     'reports.serverQuery'(organ, query){
       numReps = Reports[organ].find(query).count();
       return numReps;
     },
 
-    'reports.exportChecked'(organ, key, checkedReports){
-      if (key == "ReportID"){
-        var checkedKeyValues = checkedReports;
-      } else {
-        var checkedKeyValues = [];
-        for (var ind in checkedReports){
-          var report = Reports[organ].find({ReportID: checkedReports[ind]}).fetch()[0];
-          if ((report !== undefined) && (!checkedKeyValues.includes(report[key]))){
-            checkedKeyValues.push(report[key]);
-          }
-        }
-      }
-      return Meteor.call('reports.fetchReports', organ, key, checkedKeyValues);
-    },
-
     'reports.fetchReports'(organ, key, keyValues){
-      var reports = [];
-      for (var ind in keyValues){
-        reports = reports.concat(Reports[organ].find({[key]: keyValues[ind]}).fetch());
-      }
+      var reports = Reports[organ].find({[key]: {$in: keyValues}}).fetch();
       reports = reports.filter((n) => { return n != undefined });
       return reports;
     }
@@ -60,16 +42,11 @@ Meteor.methods({
     });
   },
 
-  'reports.unvalidateChecked'(organ, checkedReports){
-    for (var ind in checkedReports){
-      var report = Reports[organ].find({'ReportID': checkedReports[ind]}).fetch()[0];
-      Meteor.call('reports.updateReport', organ, report['_id'], {validatedLabels: []});
-    }
-  },
-
   // For each report with at least one validated label, add it to Annotations collection
   'reports.submitAndRemoveValidated'(organ) {
-    Reports[organ].find({ $where: "this.validatedLabels.length > 0" }).forEach(
+    const organ_extractions = extractions[organ];
+    var reports = Reports[organ].find({ $where: "this.validatedLabels.length > 0" }).fetch();
+    reports.forEach(
       function(report){
         // For each validated label, add its value to the corresponding new report
         var rep = {

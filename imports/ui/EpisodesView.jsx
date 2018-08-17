@@ -12,7 +12,7 @@ import EpisodesReportList from './sub-components/EpisodesReportList.jsx';
 import BulkExportButton from './sub-components/BulkExportButton.jsx';
 import BulkExport from './sub-components/BulkExport.jsx';
 
-var allExtractions = require("/imports/extractions.json")['All']
+var allExtractions = require("/imports/extractions.json")['All'];
 
 class EpisodesView extends Component {
 
@@ -53,10 +53,10 @@ class EpisodesView extends Component {
             <FilterList organ={this.props.organ} extractions={this.props.extractions}/>
           </div>
           <div className="col-md-6 centered">
-            <EpisodesExportButton organ={this.props.organ} extractions={allExtractions} exportKey="ReportID"
-            exportText="Export Selected" desc="This exports the set of single path reports selected below."
+            <EpisodesExportButton organ={this.props.organ} extractions={allExtractions} exportKey="ReportID" reports={this.props.reports}
+            exportText="Export Displayed" desc="This exports the set of single path reports displayed below."
             filename={this.queryToFilename()+".csv"}/>
-            <EpisodesExportButton organ={this.props.organ} extractions={allExtractions} exportKey="EMPI"
+            <EpisodesExportButton organ={this.props.organ} extractions={allExtractions} exportKey="EMPI" reports={this.props.reports}
             exportText="Export All Reports" desc="This exports ALL path reports associated with the patients selected."
             filename={this.queryToFilename()+"_All.csv"}/>
             <EpisodesReportList organ={this.props.organ} name="episodes" reports={this.props.reports}/>

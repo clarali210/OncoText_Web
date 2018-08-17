@@ -63,9 +63,9 @@ export default withTracker((props) => {
   const extractions = props.extractions;
   const currentId = FlowRouter.getParam('_id');
   const oid = new Meteor.Collection.ObjectID(currentId);
-  Meteor.subscribe(organ+'-reports', {'_id': oid}, 1);
+  const reportSubscription = props.PostSubs.subscribe(organ+'-reports', {'_id': oid}, 1);
 
-  var currentReport = db.find({}).fetch()[0];
+  var currentReport = db.find({'_id': oid}).fetch()[0];
 
   var extractionLabels = []
   for (var category in extractions){
@@ -77,6 +77,6 @@ export default withTracker((props) => {
     extractions: extractions,
     currentReport: currentReport,
     remainingCount: localStorage.getItem(organ+'-query'),
-    extractionLabels: extractionLabels
+    extractionLabels: extractionLabels,
   };
 })(OneReportView);

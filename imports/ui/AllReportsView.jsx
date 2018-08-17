@@ -8,11 +8,11 @@ import ReportLimit from './sub-components/ReportLimit.jsx';
 import SearchBar from './sub-components/SearchBar.jsx';
 import FilterList from './sub-components/FilterList.jsx';
 import ExportButton from './sub-components/ExportButton.jsx';
-import UnvalidateCheckedButton from './sub-components/UnvalidateCheckedButton.jsx';
+import UnvalidateDisplayedButton from './sub-components/UnvalidateDisplayedButton.jsx';
 import SubmitValidatedButton from './sub-components/SubmitValidatedButton.jsx';
 import ReportList from './sub-components/ReportList.jsx';
 
-var allExtractions = require("/imports/extractions.json")['All']
+var allExtractions = require("/imports/extractions.json")['All'];
 
 class AllReportsView extends Component {
 
@@ -37,28 +37,32 @@ class AllReportsView extends Component {
 
         <div className="col-md-12 view-bar row row-same-height centered">
           <div className="report-limit">
-            <ReportLimit organ={this.props.organ}/>
+            <ReportLimit organ={this.props.organ} subs={this.props.subs}/>
           </div>
           <div className="view-bar-title">
-            <h2>Viewing All</h2>
+            <h2>Viewing {this.props.organ}</h2>
             <div id="num_report"><i>{this.props.query} matching query</i></div>
           </div>
           <div className="search">
-            <SearchBar organ={this.props.organ}/>
+            <SearchBar organ={this.props.organ} subs={this.props.subs}/>
           </div>
         </div>
 
         <div className="col-md-12 centered">
           <div className="col-md-2 centered">
-            <FilterList organ={this.props.organ} extractions={this.props.extractions}/>
+            <FilterList organ={this.props.organ} extractions={this.props.extractions} subs={this.props.subs}/>
           </div>
           <div className="col-md-5 centered">
-            <ExportButton organ={this.props.organ} extractions={allExtractions} exportKey="ReportID" exportText="Export Selected" desc="This exports the set of single path reports selected below." filename={this.queryToFilename()+".csv"}/>
-            <ExportButton organ={this.props.organ} extractions={allExtractions} exportKey="EMPI" exportText="Export All Reports" desc="This exports ALL path reports associated with the patients selected." filename={this.queryToFilename()+"_All.csv"}/>
+            <ExportButton organ={this.props.organ} extractions={allExtractions} reports={this.props.reports}
+            exportKey="ReportID" exportText="Export Displayed" desc="This exports the set of single path reports displayed below."
+            filename={this.queryToFilename()+".csv"}/>
+            <ExportButton organ={this.props.organ} extractions={allExtractions} reports={this.props.reports}
+            exportKey="EMPI" exportText="Export All Reports" desc="This exports ALL path reports associated with the patients selected."
+            filename={this.queryToFilename()+"_All.csv"}/>
             <ReportList organ={this.props.organ} name="unvalidated" reports={this.props.reports}/>
           </div>
           <div className="col-md-5 centered">
-            <UnvalidateCheckedButton organ={this.props.organ}/>
+            <UnvalidateDisplayedButton organ={this.props.organ} validatedReports={this.props.reports['validated']}/>
             <SubmitValidatedButton organ={this.props.organ} validatedReports={this.props.reports['validated']}/>
             <ReportList organ={this.props.organ} name="validated" reports={this.props.reports}/>
           </div>
@@ -129,7 +133,7 @@ export default withTracker((props) => {
   // Report limit
   var reportLimit = parseInt(Session.get(organ+'-reportLimit'));
 
-  const reportSubscription = Meteor.subscribe(organ+'-reports', filterQuery, reportLimit);
+  const reportSubscription = props.PostSubs.subscribe(organ+'-reports', filterQuery, reportLimit);
   var unvalidatedReports = db.find({$where: "this.validatedLabels.length === 0"}).fetch();
   var validatedReports = db.find({$where: "this.validatedLabels.length > 0"}).fetch();
 
@@ -175,5 +179,6 @@ export default withTracker((props) => {
     },
     query: Session.get(organ+'-query'),
     filterQuery: filterQuery,
+    subs: reportSubscription,
   };
 })(AllReportsView);

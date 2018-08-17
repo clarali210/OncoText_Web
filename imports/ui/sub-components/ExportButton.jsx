@@ -6,48 +6,43 @@ import { CSVLink } from 'react-csv';
 class ExportButton extends Component {
 
   componentWillReceiveProps(nextProps){
-    if (JSON.stringify(this.props.checkedReports) !== JSON.stringify(nextProps.checkedReports)){
+    if (JSON.stringify(this.props.reports) !== JSON.stringify(nextProps.reports)){
       Session.set(this.props.organ+'-exportText', {'ReportID': "Loading...", 'EMPI': 'Loading...'});
       Session.set(this.props.organ+'-exportData', {'ReportID': [], "EMPI": []});
     }
   }
 
-  handleAlert(){
-    if (this.props.checkedReports['unvalidated'].concat(this.props.checkedReports['validated']).length === 0){
-      alert("No reports selected!");
-    }
-  }
-
   render() {
+    var checkedReports = this.props.reports['unvalidated'].concat(this.props.reports['validated']);
 
-    var button = [];
-    var checkedReports = this.props.checkedReports['unvalidated'].concat(this.props.checkedReports['validated']);
+    if (this.props.exportKey === 'ReportID'){
+      checkedReports.forEach((report) => {
+        report['Report_Text'] = report['Report_Text'].replace(/\"/g, "\'");
+        report['Report_Text'] = report['Report_Text'].replace(/\#/g, "number");
+      })
 
-    if (checkedReports.length === 0){
-      return(
-        <div className={"button-section export-"+this.props.exportKey}>
-          <div className="button-desc"><b>{this.props.description}</b></div>
-          <p><button className="btn btn-lg btn-info mar" onClick={() => this.handleAlert()}>{this.props.exportText}</button></p>
-        </div>
-      );
-    } else {
+      var newText = this.props.currentText;
+      newText[this.props.exportKey] = this.props.exportText;
+      Session.set(this.props.organ+'-exportText', newText);
+
+      var exports = this.props.exportData;
+      exports[this.props.exportKey] = checkedReports;
+      Session.set(this.props.organ+'-exportData', exports);
+    }
+    else {
+      var displayedIDs = [];
+      checkedReports.forEach((report) => {
+        displayedIDs.push(report[this.props.exportKey]);
+      })
+
       var exportData = [];
-
-      var headers = ["EMPI", "Report_Date", "Report_Text"];
-      for (var category in this.props.extractions){
-        for (var label in this.props.extractions[category]){
-          headers.push(label);
-        }
-      }
-      headers = headers.concat(["Report_Text_Segmented", "Report_Date_Time", "filename", "batchID", "train", "Institution", "MRN", "ReportID"])
 
       const self = this;
       Meteor.call(
-        'reports.exportChecked', self.props.organ, self.props.exportKey, checkedReports,
+        'reports.fetchReports', self.props.organ, self.props.exportKey, displayedIDs,
         function(error, result){
           if (error){
             console.log(error);
-
           }
           if (result != undefined){
             for (var ind in result) {
@@ -76,16 +71,24 @@ class ExportButton extends Component {
           }
         }
       );
-
-      return (
-        <div className={"button-section export-"+this.props.exportKey}>
-          <div className="button-desc"><b>{this.props.description}</b></div>
-          <CSVLink filename={this.props.filename} headers={headers} data={Session.get(this.props.organ+'-exportData')[this.props.exportKey]} target="_self">
-            <p><button className="btn btn-lg btn-info mar">{Session.get(this.props.organ+'-exportText')[this.props.exportKey]}</button></p>
-          </CSVLink>
-        </div>
-      );
     }
+
+    var headers = ["EMPI", "Report_Date", "Report_Text"];
+    for (var category in this.props.extractions){
+      for (var label in this.props.extractions[category]){
+        headers.push(label);
+      }
+    }
+    headers = headers.concat(["Report_Text_Segmented", "Report_Date_Time", "filename", "batchID", "Institution", "MRN", "ReportID"])
+
+    return (
+      <div className={"button-section export-"+this.props.exportKey}>
+        <div className="button-desc"><b>{this.props.description}</b></div>
+        <CSVLink filename={this.props.filename} headers={headers} data={Session.get(this.props.organ+'-exportData')[this.props.exportKey]} target="_self">
+          <p><button className="btn btn-lg btn-info mar">{Session.get(this.props.organ+'-exportText')[this.props.exportKey]}</button></p>
+        </CSVLink>
+      </div>
+    );
   }
 }
 
@@ -100,7 +103,7 @@ export default withTracker((props) => {
     exportText: props.exportText,
     currentText: Session.get(props.organ+'-exportText'),
     exportData: Session.get(props.organ+'-exportData'),
-    checkedReports: Session.get(props.organ+'-checkedReports') || {unvalidated: [], validated: []},
+    reports: props.reports,
     description: props.desc,
     filename: props.filename,
   })
